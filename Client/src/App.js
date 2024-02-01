@@ -8,6 +8,7 @@ import Header from './components/Header';
 import ClientPage from './components/ClientPage';
 import CaregiverPage from './components/CaregiverPage';
 import AdminPage from './components/AdminPage';
+import LoginPage from './components/LoginPage';
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/client" element={<ClientPage />} />
         <Route path="/caregiver" element={<CaregiverPage />} />
         <Route path="/admin" element={<AdminPage />} />
+        <Route path="/login" element={<LoginPage />} />
 
         
       </Routes>
