@@ -1,54 +1,34 @@
-import React, { useEffect, useState } from 'react';
-import './Header.css';
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
-import { Link } from 'react-router-dom'
+import React from 'react';
+import { Navbar, Nav, NavItem, Container } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
+
 function Header() {
-
     return (
-        <Navbar expand="lg" className="bg-body-tertiary">
-            <Container>
-                <Navbar.Toggle aria-controls="basic-navbar-nav" />
-                <Navbar.Collapse id="basic-navbar-nav">
-                    <Nav>
-                        <Nav.Link href='/'>
-                            <Link to='/'>
-                                Home
-                            </Link>
-                        </Nav.Link>
-                        <Nav.Link href='/contact'>
-                            <Link to='/contact'>
-                                Contact
-                            </Link>
-                        </Nav.Link>
-                        <Nav.Link href='/sponsors'>
-                            <Link to='/sponsors'>
-                                Sponsors
-                            </Link>
-                        </Nav.Link>
-                        <Nav.Link href='/client'>
-                            <Link to='/client'>
-                                Client
-                            </Link>
-                        </Nav.Link>
-                        <Nav.Link href='/caregiver'>
-                            <Link to='/caregiver'>
-                                Caregiver
-                            </Link>
-                        </Nav.Link>
-                        <Nav.Link href='/admin'>
-                            <Link to='/admin'>
-                                Admin
-                            </Link>
-                        </Nav.Link>
-                        <Nav.Link href='/login'>
-                            <Link to='/login'>
-                                Login
-                            </Link>
-                        </Nav.Link>
-
+        <Navbar bg="dark" variant="dark" expand="lg">
+            <Container fluid>
+                <Navbar.Collapse id="navbarNavDropdown">
+                    <Nav className="ml-auto">
+                        <NavItem>
+                            <Link to='/' className="nav-link">Home</Link>
+                        </NavItem>
+                        <NavItem>
+                            <Link to='/contact' className="nav-link">Contact</Link>
+                        </NavItem>
+                        <NavItem>
+                            <Link to='/sponsors' className="nav-link">Sponsors</Link>
+                        </NavItem>
+                        <NavItem>
+                            <Link to='/client' className="nav-link">Client</Link>
+                        </NavItem>
+                        <NavItem>
+                            <Link to='/caregiver' className="nav-link">Caregiver</Link>
+                        </NavItem>
+                        <NavItem>
+                            <Link to='/admin' className="nav-link">Admin</Link>
+                        </NavItem>
+                        <NavItem>
+                            <Link to='/login' className="nav-link">Login</Link>
+                        </NavItem>
                     </Nav>
                 </Navbar.Collapse>
             </Container>
