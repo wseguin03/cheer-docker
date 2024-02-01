@@ -4,7 +4,7 @@ const SponsorsPage = () => {
     return (
       <div>
         <h1>Sponsors Page</h1>
-        <p>Here is our sponsors **more info to be added*</p>
+        <p>Here are our sponsors **more info to be added*</p>
       </div>
     );
   };

@@ -12,7 +12,7 @@ function Header() {
             <Container>
                 <Navbar.Brand href="/">
                     <Link to='/'>
-                        CHEER
+                        Home
                     </Link>
                 </Navbar.Brand>
                 <Navbar.Toggle aria-controls="basic-navbar-nav" />

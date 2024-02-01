@@ -5,6 +5,9 @@ import HomePage from './components/HomePage';
 import ContactPage from './components/ContactPage';
 import SponsorsPage from './components/SponsorsPage';
 import Header from './components/Header';
+import ClientPage from './components/ClientPage';
+import CaregiverPage from './components/CaregiverPage';
+import AdminPage from './components/AdminPage';
 
 function App() {
   return (
@@ -14,7 +17,11 @@ function App() {
         <Route path="/" element={<HomePage />} />
         <Route path="/contact" element={<ContactPage />} />
         <Route path="/sponsors" element={<SponsorsPage />} />
+        <Route path="/client" element={<ClientPage />} />
+        <Route path="/caregiver" element={<CaregiverPage />} />
+        <Route path="/admin" element={<AdminPage />} />
 
+        
       </Routes>
     </BrowserRouter>
   );
