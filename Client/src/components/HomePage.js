@@ -1,7 +1,6 @@
 import React from 'react';
 import cheerLogo from '../assets/olli-cheer-logo.png'
 import { Container, Col } from 'react-bootstrap'
-import './HomePage.css'
 
 const HomePage = () => {
   return (
