@@ -1,0 +1,16 @@
+div {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    background-color: #ffe6e6;
+  }
+  
+  /* Style the heading */
+  h1 {
+    color: #1f6221;
+  }
+  
+  /* Style the paragraph */
+  p {
+    color: #1f6221;
+  }
