@@ -1,34 +1,22 @@
 import React from 'react';
-import { Navbar, Nav, NavItem, Container } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
-import './Header.css';
+import { Navbar, Nav, Container } from 'react-bootstrap';
+import { NavLink } from 'react-router-dom';
+import './Header.css'; 
+
 function Header() {
     return (
-        <Navbar bg="dark" variant="dark" expand="lg">
+        <Navbar bg="dark" variant="dark" expand="lg" className="mb-4">
             <Container fluid>
+                <Navbar.Brand href="/">CHEER</Navbar.Brand>
+                <Navbar.Toggle aria-controls="navbarNavDropdown" />
                 <Navbar.Collapse id="navbarNavDropdown">
                     <Nav className="ml-auto">
-                        <NavItem>
-                            <Link to='/' className="nav-link">Home</Link>
-                        </NavItem>
-                        <NavItem>
-                            <Link to='/contact' className="nav-link">Contact</Link>
-                        </NavItem>
-                        <NavItem>
-                            <Link to='/sponsors' className="nav-link">Sponsors</Link>
-                        </NavItem>
-                        <NavItem>
-                            <Link to='/client' className="nav-link">Client</Link>
-                        </NavItem>
-                        <NavItem>
-                            <Link to='/caregiver' className="nav-link">Caregiver</Link>
-                        </NavItem>
-                        <NavItem>
-                            <Link to='/admin' className="nav-link">Admin</Link>
-                        </NavItem>
-                        <NavItem>
-                            <Link to='/login' className="nav-link">Login</Link>
-                        </NavItem>
+                        <Nav.Link as={NavLink} to='/contact'>Contact</Nav.Link>
+                        <Nav.Link as={NavLink} to='/sponsors'>Sponsors</Nav.Link>
+                        <Nav.Link as={NavLink} to='/client'>Client</Nav.Link>
+                        <Nav.Link as={NavLink} to='/caregiver'>Caregiver</Nav.Link>
+                        <Nav.Link as={NavLink} to='/admin'>Admin</Nav.Link>
+                        <Nav.Link as={NavLink} to='/login'>Login</Nav.Link>
                     </Nav>
                 </Navbar.Collapse>
             </Container>
