@@ -1,7 +1,7 @@
 import React from 'react';
 import { Navbar, Nav, NavItem, Container } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-
+import './Header.css';
 function Header() {
     return (
         <Navbar bg="dark" variant="dark" expand="lg">
