@@ -1,11 +1,11 @@
 import React from 'react';
 import { Navbar, Nav, Container } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
-import './Header.css'; 
+import './Header.css';
 
 function Header() {
     return (
-        <Navbar bg="dark" variant="dark" expand="lg" className="mb-4">
+        <Navbar bg="dark" variant="dark" expand="lg">
             <Container fluid>
                 <Navbar.Brand href="/">CHEER</Navbar.Brand>
                 <Navbar.Toggle aria-controls="navbarNavDropdown" />
