@@ -3,7 +3,8 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const nodemailer = require('nodemailer');
 const app = express();
-
+const cors = require('cors');
+app.use(cors());
 const port = 3001; // Use a different port from your React app
 
 // Database Connection
@@ -47,6 +48,25 @@ const sendVerificationEmail = (userEmail, userId) => {
   });
 };
 
+// function to send contact email
+const sendContactEmail = (to, subject, text) => {
+  const mailOptions = {
+    from: 'cheer.noreply@gmail.com',
+    to: to,
+    subject: subject,
+    text: text
+  };
+
+  transporter.sendMail(mailOptions, function(error, info){
+    if (error) {
+      console.log(error);
+    } else {
+      console.log('Email sent: ' + info.response);
+    }
+  });
+};
+
+
 // Registration Endpoint
 app.post('/register', async (req, res) => {
   try {
@@ -81,6 +101,17 @@ app.get('/verify/:userId', async (req, res) => {
     res.status(500).send('Error verifying email');
   }
 });
+
+// Send contact email endpoint
+app.post('/send-contact-email', (req, res) => {
+  const { subject, body } = req.body;
+  const recipientEmail = 'cheer.noreply@gmail.com';
+
+  sendContactEmail(recipientEmail, subject, body);
+  
+  res.status(200).send('Contact email sent successfully.');
+});
+
 
 app.get('/', (req, res) => {
   res.send('Hello from the server!');
