@@ -1,11 +1,27 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import Form from 'react-bootstrap/Form';
+
 
 const CaregiverPage = () => {
+    const [email, setEmail] = useState('');
+
+    const handleEmailChange = (e) => {
+        setEmail(e.target.value);
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        // Here, you can add the logic to handle the form submission, such as sending the email to a backend endpoint.
+        console.log('Email submitted:', email);
+        // Reset the email input field after submission
+        setEmail('');
+    };
+
     return (
       <Container className="caregiver-dashboard">
       <h1 className="text-center my-4">Hello Caregivers!</h1>
@@ -23,7 +39,7 @@ const CaregiverPage = () => {
         <Col md={4} className="mb-3">
           <Card>
             <Card.Body>
-              <Card.Title>Upcomoing Events</Card.Title>
+              <Card.Title>Upcoming Events</Card.Title>
               <Button variant="success" className="m-2">Newsletter</Button>
               <Button variant="warning" className="m-2">Events of the Month</Button>
             </Card.Body>
@@ -35,6 +51,23 @@ const CaregiverPage = () => {
               <Card.Title>Contact Information</Card.Title>
               <Button variant="info" className="m-2">Your Phone Number</Button>
               <Button variant="dark" className="m-2">Your Email</Button>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+      <Row className="justify-content-center">
+        <Col md={6}>
+          <Card>
+            <Card.Body>
+              <Card.Title>Newsletter Signup</Card.Title>
+              <Form onSubmit={handleSubmit}>
+              <Form.Group controlId="formBasicEmail">
+                <Form.Label>Email address</Form.Label>
+                <Form.Control type="email" placeholder="Enter email" value={email} onChange={handleEmailChange} required />
+                <Form.Text className="text-muted"> We'll never share your email with anyone else. </Form.Text>
+              </Form.Group>
+              <Button variant="primary" type="submit">Sign up</Button>
+              </Form>
             </Card.Body>
           </Card>
         </Col>
