@@ -7,10 +7,12 @@ const cors = require('cors');
 app.use(cors());
 const port = 3001; // Use a different port from your React app
 
-// Database Connection
-mongoose.connect('mongodb://localhost/userDatabase', { useNewUrlParser: true, useUnifiedTopology: true });
 
-// User Schema
+mongoose.connect('mongodb+srv://temp_user:admin@cheer.gzid9bc.mongodb.net/?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true });
+
+mongoose.connection.once('open', function () {
+  console.log("MongoDB database connection established successfully");
+});// User Schema
 const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
@@ -39,7 +41,7 @@ const sendVerificationEmail = (userEmail, userId) => {
     text: `Please click on this link to verify your email: http://localhost:${port}/verify/${userId}`
   };
 
-  transporter.sendMail(mailOptions, function(error, info){
+  transporter.sendMail(mailOptions, function (error, info) {
     if (error) {
       console.log(error);
     } else {
@@ -76,10 +78,10 @@ app.post('/register', async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = new User({ email, password: hashedPassword });
     const user = await newUser.save();
-    
+
     // Send verification email
     sendVerificationEmail(user.email, user._id);
-    
+
     res.status(201).send('User registered successfully. Please check your email to verify your account.');
   } catch (error) {
     console.log(error);
