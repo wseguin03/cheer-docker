@@ -49,17 +49,19 @@ const sendVerificationEmail = (userEmail, userId) => {
 };
 
 // function to send contact email
-const sendContactEmail = (to, subject, text) => {
+const sendContactEmail = (to, subject, text, fullName, phoneNumber, userEmail) => {
+  const fullMessage = `${text}\n\nFull Name: ${fullName}\nEmail: ${userEmail}\nPhone Number: ${phoneNumber}`;
+
   const mailOptions = {
     from: 'cheer.noreply@gmail.com',
     to: to,
     subject: subject,
-    text: text
+    text: fullMessage
   };
 
   transporter.sendMail(mailOptions, function(error, info){
     if (error) {
-      console.log(error);
+      console.error('Failed to send email:', error);
     } else {
       console.log('Email sent: ' + info.response);
     }
@@ -104,13 +106,14 @@ app.get('/verify/:userId', async (req, res) => {
 
 // Send contact email endpoint
 app.post('/send-contact-email', (req, res) => {
-  const { subject, body } = req.body;
+  const { subject, body, fullName, phoneNumber, email } = req.body;
   const recipientEmail = 'cheer.noreply@gmail.com';
 
-  sendContactEmail(recipientEmail, subject, body);
+  sendContactEmail(recipientEmail, subject, body, fullName, phoneNumber, email);
   
   res.status(200).send('Contact email sent successfully.');
 });
+
 
 
 app.get('/', (req, res) => {
