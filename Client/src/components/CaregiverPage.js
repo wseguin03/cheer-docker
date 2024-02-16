@@ -14,13 +14,28 @@ const CaregiverPage = () => {
         setEmail(e.target.value);
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        // Here, you can add the logic to handle the form submission, such as sending the email to a backend endpoint.
-        console.log('Email submitted:', email);
-        // Reset the email input field after submission
-        setEmail('');
-    };
+    const handleSubmit = async (e) => {
+      e.preventDefault();
+      try {
+          // Send email to the new caregiver newsletter signup endpoint
+          await fetch('http://localhost:3001/subscribe-newsletter', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                  email,
+              }),
+          });
+          alert('Newsletter signup successful!');
+          // Reset the email input field after submission
+          setEmail('');
+      } catch (error) {
+          console.error('Failed to process caregiver newsletter signup:', error);
+          alert('Failed to sign up for the newsletter. Please try again later.');
+      }
+  };
+  
 
     return (
       <Container className="caregiver-dashboard">

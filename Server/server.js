@@ -25,6 +25,21 @@ const userSchema = new mongoose.Schema({
   caregiver: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: function() { return this.userType === 'client'; } } // Reference to Caregiver
 });
 
+// for the caregivers who signed up to be subscribed to the newsletter
+const newsletterSchema = new mongoose.Schema({
+  email: {
+      type: String,
+      required: true,
+      unique: true,
+  },
+  timestamp: {
+      type: Date,
+      default: Date.now,
+  },
+});
+const NewsletterSignup = mongoose.model('Newsletter', newsletterSchema);
+
+
 //USE THIS FUNCTION WITH HEAVY CAUTION -- WILL DELETE ALL USERS FROM DATABASE
 //USE FOR EARLY TESTING FOR REMOVING GARBAGE INPUTS
 //REMOVE BEFORE DEPLOYMENT
@@ -219,6 +234,31 @@ app.post('/send-contact-email', (req, res) => {
   res.status(200).send('Contact email sent successfully.');
 });
 
+// Caregiver Newsletter Signup form
+app.post('/subscribe-newsletter', async (req, res) => {
+  try {
+      const { email } = req.body;
+
+      // check if the email already exists in the database
+      const existingCaregiver = await NewsletterSignup.findOne({ email });
+
+      if (existingCaregiver) {
+          return res.status(400).json({ message: 'Email already exists' });
+      }
+
+      // new caregiver instance
+      const newCaregiver = new NewsletterSignup({ email });
+
+      // save to the database
+      await newCaregiver.save();
+
+      console.log(`Caregiver with email ${email} has signed up for the newsletter and saved to the database.`);
+      res.status(200).json({ message: 'Newsletter signup successful' });
+  } catch (error) {
+      console.error('Failed to process caregiver newsletter signup:', error);
+      res.status(500).json({ message: 'Internal server error' });
+  }
+});
 
 
 app.get('/', (req, res) => {
