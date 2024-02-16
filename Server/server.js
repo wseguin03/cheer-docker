@@ -20,7 +20,9 @@ const userSchema = new mongoose.Schema({
   phoneNumber: { type: String, required: true },
   password: { type: String, required: true },
   isVerified: { type: Boolean, default: false },
-  isAdminApproved: { type: Boolean, default: false } // New field to track admin approval
+  isAdminApproved: { type: Boolean, default: false },
+  userType: { type: String, required: true, enum: ['staff', 'caregiver', 'admin', 'client'] },
+  caregiver: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: function() { return this.userType === 'client'; } } // Reference to Caregiver
 });
 
 //USE THIS FUNCTION WITH HEAVY CAUTION -- WILL DELETE ALL USERS FROM DATABASE
@@ -174,6 +176,29 @@ app.get('/admin-approve/:userId', async (req, res) => {
   } catch (error) {
     console.log(error);
     res.status(500).send('Error approving user');
+  }
+});
+
+//end point for users to log in to the system
+app.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res.status(400).json({ message: 'Invalid credentials' });
+    }
+    if (!user.isVerified) {
+      return res.status(401).json({ message: 'Please verify your email first' });
+    }
+    // Here, implement token generation or session creation as per your auth strategy
+    res.status(200).json({ message: 'Login successful', role: user.role }); // Include user role if applicable
+  } catch (error) {
+    console.error('Login error:', error);
+    res.status(500).json({ message: 'Server error during login' });
   }
 });
 

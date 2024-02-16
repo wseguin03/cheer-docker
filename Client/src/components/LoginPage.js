@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Container, Form, Button, Card, Alert } from 'react-bootstrap';
-//import 'bootstrap/dist/css/bootstrap.min.css';
+import { useNavigate } from 'react-router-dom'; // Correct import for useNavigate
 import './loginPage.css';
 
 const LoginPage = () => {
+  const navigate = useNavigate(); // Correctly use useNavigate instead of useHistory
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [firstName, setFirstName] = useState(''); // New state variable
@@ -14,14 +15,28 @@ const LoginPage = () => {
 
   const handleLogin = async (event) => {
     event.preventDefault();
-    console.log('Login attempt with:', username, password);
-    // Implement login logic here
+    try {
+      const response = await fetch('http://localhost:3001/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: username, password }),
+      });
+      const data = await response.json();
+      if (response.ok) {
+        navigate('/caregiver'); // Use navigate for redirection
+      } else {
+        setMessage(data.message || 'Login failed');
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      setMessage('Failed to login. Please try again.');
+    }
   };
 
   const handleRegister = async (event) => {
     event.preventDefault();
-    console.log('Register attempt with:', firstName, lastName, username, phoneNumber, password);
-    // Send the user details to the server for registration
     try {
       const response = await fetch('http://localhost:3001/register', {
         method: 'POST',
@@ -29,10 +44,10 @@ const LoginPage = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          email: username, 
-          password: password, 
-          firstName: firstName, 
-          lastName: lastName, 
+          email: username,
+          password: password,
+          firstName: firstName,
+          lastName: lastName,
           phoneNumber: phoneNumber
         }),
       });
