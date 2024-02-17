@@ -25,3 +25,12 @@
 .cheer-title h1 {
     color: white;
 }
+
+.large-row {
+    height: auto;
+    /* Adjust as needed */
+}
+
+.why-row {
+    margin-top: auto;
+}
