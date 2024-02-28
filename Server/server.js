@@ -21,7 +21,7 @@ const userSchema = new mongoose.Schema({
   password: { type: String, required: true },
   isVerified: { type: Boolean, default: false },
   isAdminApproved: { type: Boolean, default: false },
-  userType: { type: String, required: true, enum: ['staff', 'caregiver', 'admin', 'client'] },
+  userType: { type: String, required: true, enum: ['staff', 'caregiver', 'admin', 'client'], default: 'caregiver' },
   caregiver: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: function() { return this.userType === 'client'; } } // Reference to Caregiver
 });
 
