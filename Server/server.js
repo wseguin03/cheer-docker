@@ -6,24 +6,26 @@ const app = express();
 const cors = require('cors');
 app.use(cors());
 const port = 3001; // Use a different port from your React app
-
-
+const userRoutes = require('./routes/userRoutes');
+// require('dotenv').config()
+// console.log("TOKEN"+ process.env.JWT_SECRET)
+// Connect to MongoDB
 mongoose.connect('mongodb+srv://temp_user:admin@cheer.gzid9bc.mongodb.net/?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true });
 
 mongoose.connection.once('open', function () {
   console.log("MongoDB database connection established successfully");
 });// User Schema
-const userSchema = new mongoose.Schema({
-  firstName: { type: String, required: true },
-  lastName: { type: String, required: true },
-  email: { type: String, required: true, unique: true },
-  phoneNumber: { type: String, required: true },
-  password: { type: String, required: true },
-  isVerified: { type: Boolean, default: false },
-  isAdminApproved: { type: Boolean, default: false },
-  userType: { type: String, required: true, enum: ['staff', 'caregiver', 'admin', 'client'], default: 'caregiver' },
-  caregiver: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: function() { return this.userType === 'client'; } } // Reference to Caregiver
-});
+// const userSchema = new mongoose.Schema({
+//   firstName: { type: String, required: true },
+//   lastName: { type: String, required: true },
+//   email: { type: String, required: true, unique: true },
+//   phoneNumber: { type: String, required: true },
+//   password: { type: String, required: true },
+//   isVerified: { type: Boolean, default: false },
+//   isAdminApproved: { type: Boolean, default: false },
+//   userType: { type: String, required: true, enum: ['staff', 'caregiver', 'admin', 'client'], default: 'caregiver' },
+//   caregiver: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: function() { return this.userType === 'client'; } } // Reference to Caregiver
+// });
 
 // for the caregivers who signed up to be subscribed to the newsletter
 const newsletterSchema = new mongoose.Schema({
@@ -55,7 +57,7 @@ app.get('/empty-database', async (req, res) => {
 
 
 
-const User = mongoose.model('User', userSchema);
+// const User = mongoose.model('User', userSchema);
 
 app.use(express.json()); // for parsing application/json
 
@@ -268,3 +270,6 @@ app.get('/', (req, res) => {
 app.listen(port, () => {
   console.log(`Server is running on http://localhost:${port}`);
 });
+//Routes
+
+app.use('/api/users', userRoutes);

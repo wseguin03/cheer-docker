@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Container, Form, Button, Card, Alert } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom'; // Correct import for useNavigate
 import './loginPage.css';
+import { set } from 'mongoose';
+import Loading from './Loading';
 
 const LoginPage = () => {
   const navigate = useNavigate(); // Correctly use useNavigate instead of useHistory
@@ -12,26 +14,38 @@ const LoginPage = () => {
   const [phoneNumber, setPhoneNumber] = useState(''); // New state variable
   const [registering, setRegistering] = useState(false); // State to toggle between login and registration
   const [message, setMessage] = useState(''); // For displaying messages to the user
-
+  const [loginState, setLoginState] = useState(false);
+  const [loading, setLoading] = useState(false); // New state variable
+  
   const handleLogin = async (event) => {
     event.preventDefault();
     try {
-      const response = await fetch('/login', {
+      setLoading(true);
+      console.log('LOADING', loading);
+      const response = await fetch('/api/users/login', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ email: username, password }),
+        body: JSON.stringify({ email: username, password}),
       });
       const data = await response.json();
       if (response.ok) {
         navigate('/caregiver'); // Use navigate for redirection
+        localStorage.setItem('userInfo', JSON.stringify(data));
+        setLoginState(true);
+        setLoading(false);
+
+
       } else {
         setMessage(data.message || 'Login failed');
+        setLoading(false);
+
       }
     } catch (error) {
       console.error('Login error:', error);
       setMessage('Failed to login. Please try again.');
+      setLoading(false);
     }
   };
 
@@ -78,6 +92,8 @@ const LoginPage = () => {
         <Card.Body>
           <h1 className="text-center mb-4">{registering ? 'Register' : 'Login'}</h1>
           {message && <Alert variant="info">{message}</Alert>}
+          {loading && <Loading/>}
+
           <Form onSubmit={handleSubmit}>
             {registering && (
               <>
