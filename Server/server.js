@@ -262,6 +262,47 @@ app.post('/subscribe-newsletter', async (req, res) => {
   }
 });
 
+//Send newsletter endpoint, sends the given content to everyone in the mailing list database
+
+app.post('/send-newsletter', async (req, res) => {
+  try {
+    const { subject, content } = req.body; // Assume subject and content are sent in the request
+
+    // Fetch all email addresses from the database
+    const subscribers = await NewsletterSignup.find({});
+
+    // Check if there are subscribers
+    if (subscribers.length === 0) {
+      return res.status(404).json({ message: 'No subscribers found' });
+    }
+
+    // Loop through all subscribers and send the email
+    subscribers.forEach(subscriber => {
+      const mailOptions = {
+        from: 'cheer.noreply@gmail.com', // sender address
+        to: subscriber.email, // list of receivers
+        subject: subject, // Subject line
+        text: content, // plain text body
+        // html: "<b>Hello world?</b>", // html body (optional)
+      };
+
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          return console.log(error);
+        }
+        console.log('Message sent: %s', info.messageId);
+      });
+    });
+
+    res.status(200).json({ message: 'Newsletter sent to all subscribers' });
+  } catch (error) {
+    console.error('Failed to send newsletter:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+
+
 
 app.get('/', (req, res) => {
   res.send('Hello from the server!');
