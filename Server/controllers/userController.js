@@ -1,11 +1,16 @@
 const User = require('../models/user');
 const asyncHandler = require('express-async-handler');
-const generateToken = require('../utils/generateToken'); // adjust the path according to your project structure
+const generateToken = require('../utils/generateToken'); 
+const { sendVerificationEmail } = require('../utils/mailer'); 
+const { sendAdminApprovalEmail } = require('../utils/mailer'); 
+const { sendConfirmation } = require('../utils/mailer'); 
 
+
+const crypto = require('crypto');
 const registerUser = asyncHandler(async (req, res) => {
     const { firstName, lastName, email, phoneNumber, password, userType } = req.body;
 
-    // Check if email is in proper format
+    // check if email is in proper format
     const emailRegex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
     if (!emailRegex.test(email)) {
         res.status(400);
@@ -19,18 +24,28 @@ const registerUser = asyncHandler(async (req, res) => {
         throw new Error('User already exists');
     }
 
+    // generate a verification token
+    const verificationToken = crypto.randomBytes(20).toString('hex');
+
+
     const user = await User.create({
         firstName,
         lastName,
         email,
         phoneNumber,
         password,
-        userType
+        userType,
+        verificationToken,
+        isVerified: false
+
     });
 
     if (user) {
-        // Generate the token after creating the user
+        // generate the token after creating the user
         let token = generateToken(user._id);
+
+        await sendVerificationEmail(user.email, user.firstName, verificationToken);
+
 
         if (!token) {
             token = "token";
@@ -92,7 +107,7 @@ const authUser = asyncHandler(async (req, res) => {
     }
 });
 const changePassword = asyncHandler(async (req, res) => {
-    // Check if req.user exists and has an 'id' property
+    // check if req.user exists and has id
     console.log(req.user);
     if (!req.user || !req.user.id) {
         res.status(401);
@@ -138,4 +153,45 @@ const updateUser = asyncHandler(async (req, res) => {
     }
 });
 
-module.exports = { registerUser, authUser, changePassword, getUsers, updateUser };
+//  handle verification
+const verifyUser = async (req, res) => {
+    try {
+        const user = await User.findById(req.params.userId);
+        if (user && !user.isVerified) {
+            // mark the user as verified
+            user.isVerified = true;
+            await user.save();
+            
+            // send an email to the admin for approval
+            sendAdminApprovalEmail(user);
+            
+            res.send('Email verified successfully. Your account is pending admin approval.');
+        } else {
+            res.status(404).send('User not found or already verified');
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error verifying email');
+    }
+};
+
+//  handle admin verification
+const adminVerifyUser = async (req, res) => {
+    try {
+        const user = await User.findById(req.params.userId);
+        if (user && !user.isAdminApproved) {
+            user.isAdminApproved = true;
+            await user.save();    
+            res.send('Email verified successfully.');
+            sendConfirmation(user);
+        } else {
+            res.status(404).send('User not found or already verified');
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Error verifying email');
+    }
+};
+
+
+module.exports = { registerUser, authUser, changePassword, getUsers, updateUser, verifyUser, adminVerifyUser};
