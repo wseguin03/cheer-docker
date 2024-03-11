@@ -1,0 +1,9 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/cheer-docker/react-client', './Client']
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/cheer-docker/react-client']
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build', '-t', 'gcr.io/cheer-docker/node-server', './Server']
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['push', 'gcr.io/cheer-docker/node-server']
