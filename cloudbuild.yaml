@@ -7,3 +7,6 @@ steps:
   args: ['build', '-t', 'gcr.io/cheer-docker/node-server', './Server']
 - name: 'gcr.io/cloud-builders/docker'
   args: ['push', 'gcr.io/cheer-docker/node-server']
+logsBucket: 'gs://mylogsbucket'
+options:
+  defaultLogsBucketBehavior: REGIONAL_USER_OWNED_BUCKET
