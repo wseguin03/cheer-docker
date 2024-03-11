@@ -43,7 +43,7 @@ const CaregiverPage = () => {
       e.preventDefault();
       try {
           // Send email to the new caregiver newsletter signup endpoint
-          await fetch('http://localhost:3001/subscribe-newsletter', {
+          await fetch('/subscribe-newsletter', {
               method: 'POST',
               headers: {
                   'Content-Type': 'application/json',
