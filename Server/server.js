@@ -7,6 +7,9 @@ const cors = require('cors');
 app.use(cors());
 const port = 3001; // Use a different port from your React app
 const userRoutes = require('./routes/userRoutes');
+const multer = require('multer');
+const storage = multer.memoryStorage();
+const upload = multer({storage: storage});
 // require('dotenv').config()
 // console.log("TOKEN"+ process.env.JWT_SECRET)
 // Connect to MongoDB
@@ -264,9 +267,10 @@ app.post('/subscribe-newsletter', async (req, res) => {
 
 //Send newsletter endpoint, sends the given content to everyone in the mailing list database
 
-app.post('/send-newsletter', async (req, res) => {
+app.post('/send-newsletter', upload.single('file'), async (req, res) => {
   try {
     const { subject, content } = req.body; // Assume subject and content are sent in the request
+    const file = req.file //Get the attached file 
 
     // Fetch all email addresses from the database
     const subscribers = await NewsletterSignup.find({});
@@ -284,6 +288,15 @@ app.post('/send-newsletter', async (req, res) => {
         subject: subject, // Subject line
         text: content, // plain text body
         // html: "<b>Hello world?</b>", // html body (optional)
+
+        attachments:[
+          {
+            filename: file.originalname,//use orginal file name
+            content: file.buffer,//use buffer from the uploaded file
+            contentType: file.mimetype//use mimetype from uploaded file
+
+          }
+        ]
       };
 
       transporter.sendMail(mailOptions, (error, info) => {
@@ -305,6 +318,7 @@ app.post('/send-newsletter', async (req, res) => {
 
 
 app.get('/', (req, res) => {
+  console.log("test connect successful");
   res.send('Hello from the server!');
 });
 
