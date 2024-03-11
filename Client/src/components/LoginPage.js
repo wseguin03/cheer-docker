@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { Container, Form, Button, Card, Alert } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom'; // Correct import for useNavigate
 import './loginPage.css';
-import { set } from 'mongoose';
 import Loading from './Loading';
 
 const LoginPage = () => {
