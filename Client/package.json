@@ -1,7 +1,7 @@
 {
   "name": "cheer-frontend-app",
   "version": "0.1.0",
-  "proxy": "http://node-server:3001",
+  "proxy": "https://cheer-docker-server-mebdleloza-uc.a.run.app",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
