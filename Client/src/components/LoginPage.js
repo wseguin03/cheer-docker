@@ -51,7 +51,7 @@ const LoginPage = () => {
   const handleRegister = async (event) => {
     event.preventDefault();
     try {
-      const response = await fetch('/register', {
+      const response = await fetch('/api/users/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
