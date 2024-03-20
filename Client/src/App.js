@@ -9,6 +9,7 @@ import ClientPage from './components/ClientPage';
 import CaregiverPage from './components/CaregiverPage';
 import AdminPage from './components/AdminPage';
 import LoginPage from './components/LoginPage';
+import Calendar from './components/Calendar';
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="/caregiver" element={<CaregiverPage />} />
         <Route path="/admin" element={<AdminPage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/calendar" element={<Calendar />} />
 
         
       </Routes>

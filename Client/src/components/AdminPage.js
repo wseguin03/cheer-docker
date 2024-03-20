@@ -90,7 +90,7 @@ const AdminPage = () => {
                 setContent={setContent}
                 setFile={setFile}
             />
-                <Button variant="warning" className="m-2">Edit Events of the Month</Button>
+                <Button variant="warning" className="m-2">Edit Calender</Button>
               </Card.Body>
             </Card>
           </Col>
