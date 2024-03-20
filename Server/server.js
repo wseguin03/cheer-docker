@@ -345,6 +345,20 @@ app.get('/get-saved-events', async (req, res) => {
   }
 });
 
+// DELETE route to delete an event
+app.delete('/delete-events/:id', async (req, res) => {
+  try {
+    const event = await Event.findByIdAndDelete(req.params.id);
+    if (!event) {
+      res.status(404).send('No event found');
+    }
+    res.status(200).send(`Successfully deleted event with id: ${req.params.id}`);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
+
 
 
 

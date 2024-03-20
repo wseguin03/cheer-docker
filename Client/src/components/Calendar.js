@@ -161,33 +161,66 @@ class MyCalendar extends React.Component {
     this.setState({ events: [...this.state.events, event] });
   };
 
+  //delete an event
+  deleteEvent = (eventId) => {
+    const confirmDelete = window.confirm('Are you sure you want to delete this event?');
+    if (confirmDelete) {
+      // backend url
+      fetch(`/delete-events/${eventId}`, {
+        method: 'DELETE',
+      })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Error while deleting event');
+        }
+        this.setState(prevState => ({
+          events: prevState.events.filter(event => event._id !== eventId)
+        }));
+      })
+      .catch((error) => {
+        console.error('Error deleting event:', error);
+      });
+    }
+  };
+  eventStyleGetter = (event, start, end, isSelected) => {
+    let backgroundColor = '#607043'; // Your orange color
+    let style = {
+      backgroundColor: event.hexColor || backgroundColor,
+      borderRadius: '0px',
+      opacity: 0.8,
+      color: 'black',
+      border: '0px',
+      display: 'block'
+    };
+    return {
+      style: style
+    };
+  };
+
   render() {
     return (
-      <div style={{
-        margin: '20px',
-        backgroundColor: '#ece9d2', // Ensures the div background matches the body if the calendar doesn't fill the div
-        borderRadius: '5',
-        
-    }}>
-    <div style={{
-    height: '500px',
-    marginBottom: '20px',
-    border: '1px solid #607043',
-    borderRadius: '5px',
-    boxShadow: '0px 4px 8px rgba(96, 112, 67, 0.5)'
-    }}>
-    <Calendar
-    localizer={localizer}
-    events={this.state.events}
-    startAccessor="start"
-    endAccessor="end"
-    style={{ background: '#ece9d2' }} // This sets the calendar background to match
-    />
-    </div>
-    <AddEventForm addEvent={this.addEvent} />
-    </div>
+      <div style={{ margin: '20px' }}>
+        <div style={{
+          height: '500px',
+          marginBottom: '20px',
+          border: '1px solid #607043',
+          borderRadius: '5px',
+          boxShadow: '0px 4px 8px rgba(96, 112, 67, 0.5)'
+        }}>
+          <Calendar
+            localizer={localizer}
+            events={this.state.events}
+            startAccessor="start"
+            endAccessor="end"
+            style={{ background: '#ece9d2' }}
+            eventPropGetter={this.eventStyleGetter}
+            onSelectEvent={event => this.deleteEvent(event._id)}
+          />
+        </div>
+        <AddEventForm addEvent={this.addEvent} />
+      </div>
     );
-    }
-    }
-    
-    export default MyCalendar;
+  }
+}
+
+export default MyCalendar;

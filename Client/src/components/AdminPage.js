@@ -5,7 +5,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import NewsletterModal from './NewsletterModal';
-
+import { useNavigate } from 'react-router-dom'; // Correct import for useNavigate
 
 
 
@@ -14,6 +14,7 @@ import NewsletterModal from './NewsletterModal';
 
 const AdminPage = () => {
 
+  const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
   const [subject, setSubject] = useState('');
   const [content, setContent] = useState('');
@@ -21,6 +22,10 @@ const AdminPage = () => {
 
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
+
+  const handleCalendar = () =>{
+    navigate('/calendar');
+  }
   
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent the default form submission behavior, if called within a form
@@ -90,7 +95,7 @@ const AdminPage = () => {
                 setContent={setContent}
                 setFile={setFile}
             />
-                <Button variant="warning" className="m-2">Edit Calender</Button>
+                <Button variant="warning" onClick={handleCalendar} className="m-2">Edit Calender</Button>
               </Card.Body>
             </Card>
           </Col>
