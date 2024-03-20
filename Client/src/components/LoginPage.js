@@ -31,7 +31,7 @@ const LoginPage = () => {
       });
       const data = await response.json();
       if (response.ok) {
-        navigate('/caregiver'); // Use navigate for redirection
+        navigate('/'); // Use navigate for redirection
         localStorage.setItem('userInfo', JSON.stringify(data));
         setLoginState(true);
         setLoading(false);
