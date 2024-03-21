@@ -10,6 +10,7 @@ import CaregiverPage from './components/CaregiverPage';
 import AdminPage from './components/AdminPage';
 import LoginPage from './components/LoginPage';
 import StaffPage from './components/StaffPage';
+import Calendar from './components/Calendar';
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path="/admin" element={<AdminPage />} />
         <Route path="/staff" element={<StaffPage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/calendar" element={<Calendar />} />
 
         
       </Routes>

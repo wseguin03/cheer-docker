@@ -1,0 +1,5 @@
+green: #607043
+light pink: #e5ae98
+purple: #5e4f59
+orange: #ea7859
+cream: #ece9d2

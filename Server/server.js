@@ -46,6 +46,16 @@ const newsletterSchema = new mongoose.Schema({
 });
 const NewsletterSignup = mongoose.model('Newsletter', newsletterSchema);
 
+const EventSchema = new mongoose.Schema({
+  title: String,
+  start: Date,
+  end: Date,
+  allDay: Boolean,
+});
+
+
+const Event = mongoose.model('Event', EventSchema);
+
 
 //USE THIS FUNCTION WITH HEAVY CAUTION -- WILL DELETE ALL USERS FROM DATABASE
 //USE FOR EARLY TESTING FOR REMOVING GARBAGE INPUTS
@@ -315,6 +325,43 @@ app.post('/send-newsletter', upload.single('file'), async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 });
+
+//adding new events end point
+app.post('/events', async (req, res) => {
+  try {
+    const event = new Event(req.body);
+    await event.save();
+    res.status(201).send(event);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+});
+
+// GET route to retrieve events
+app.get('/get-saved-events', async (req, res) => {
+  try {
+    const events = await Event.find({});
+    res.send(events);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
+// DELETE route to delete an event
+app.delete('/delete-events/:id', async (req, res) => {
+  try {
+    const event = await Event.findByIdAndDelete(req.params.id);
+    if (!event) {
+      res.status(404).send('No event found');
+    }
+    res.status(200).send(`Successfully deleted event with id: ${req.params.id}`);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
+
+
 
 
 

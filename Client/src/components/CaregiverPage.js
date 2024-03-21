@@ -11,7 +11,11 @@ const CaregiverPage = () => {
     const [clientFirstName, setClientFirstName] = useState('');
     const [clientLastName, setClientLastName] = useState('');
     const [clientPhoneNumber, setClientPhoneNumber] = useState('');
+    const [clientPassword, setClientPassword] = useState('')
     const [email, setEmail] = useState(''); // State for the newsletter email
+    const [message, setMessage] = useState(''); // State for displaying messages to the user
+    const [isLoading, setIsLoading] = useState(false); // State for loading indicator
+
 
     // Handler for client information change
     const handleClientInfoChange = (setter) => (e) => setter(e.target.value);
@@ -20,47 +24,85 @@ const CaregiverPage = () => {
     const handleEmailChange = (e) => setEmail(e.target.value);
 
     const handleClientSubmit = async (e) => {
+
         e.preventDefault();
-        const clientInfo = {
-            email: clientEmail,
-            firstName: clientFirstName,
-            lastName: clientLastName,
-            phoneNumber: clientPhoneNumber,
-            userType: 'client',
-        };
+        setIsLoading(true);
+        
 
-        console.log('Client info submitted:', clientInfo);
-        // Reset the client information input fields after submission
-        setClientEmail('');
-        setClientFirstName('');
-        setClientLastName('');
-        setClientPhoneNumber('');
+        const userInfo = localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : null;
+        const caregiverEmail = userInfo ? userInfo.email : null;
+        console.log("Received caregiverId:", caregiverEmail);
 
-        // Here, you would typically send the clientInfo to your backend
+
+        if (!caregiverEmail) {
+            console.error("Caregiver ID is not available. Ensure the user is logged in.");
+            setIsLoading(false);
+            return;
+        }
+
+        try {
+            const response = await fetch('/api/users/register-client', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    firstName: clientFirstName,
+                    lastName: clientLastName,
+                    email: clientEmail,
+                    phoneNumber: clientPhoneNumber,
+                    password: clientPassword,
+                    userType: 'client',
+                    caregiverEmail: caregiverEmail,
+                }),
+            });
+            if (!response.ok) {
+                const errorText = await response.text();
+                throw new Error(`Server responded with ${response.status}: ${errorText}`);
+            }
+            const data = await response.json();
+
+            if (response.ok) {
+                setMessage('Client registration successful!');
+                setClientEmail('');
+                setClientFirstName('');
+                setClientLastName('');
+                setClientPhoneNumber('');
+                setClientPassword('');
+            } else {
+                setMessage(data.message || 'An error occurred during client registration.');
+            }
+        } catch (error) {
+            console.error('Client registration error:', error);
+            setMessage('Failed to register client. Please try again.');
+        } finally {
+            setIsLoading(false); // End loading
+        }
     };
 
+
     const handleSubmit = async (e) => {
-      e.preventDefault();
-      try {
-          // Send email to the new caregiver newsletter signup endpoint
-          await fetch('/subscribe-newsletter', {
-              method: 'POST',
-              headers: {
-                  'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                  email,
-              }),
-          });
-          alert('Newsletter signup successful!');
-          // Reset the email input field after submission
-          setEmail('');
-      } catch (error) {
-          console.error('Failed to process caregiver newsletter signup:', error);
-          alert('Failed to sign up for the newsletter. Please try again later.');
-      }
-  };
-  
+        e.preventDefault();
+        try {
+            // Send email to the new caregiver newsletter signup endpoint
+            await fetch('/subscribe-newsletter', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email,
+                }),
+            });
+            alert('Newsletter signup successful!');
+            // Reset the email input field after submission
+            setEmail('');
+        } catch (error) {
+            console.error('Failed to process caregiver newsletter signup:', error);
+            alert('Failed to sign up for the newsletter. Please try again later.');
+        }
+    };
+
 
     return (
         <Container className="caregiver-dashboard">
@@ -134,7 +176,14 @@ const CaregiverPage = () => {
                                     <Form.Label>Phone Number</Form.Label>
                                     <Form.Control type="text" placeholder="Enter client's phone number" value={clientPhoneNumber} onChange={handleClientInfoChange(setClientPhoneNumber)} required />
                                 </Form.Group>
-                                <Button variant="primary" type="submit" className="mt-2">Add Client</Button>
+                                <Form.Group controlId="clientPassword">
+                                    <Form.Label>Password</Form.Label>
+                                    <Form.Control type="text" placeholder="Enter client's password" value={clientPassword} onChange={handleClientInfoChange(setClientPassword)} required />
+                                </Form.Group>
+                                <Button variant="primary" type="submit" className="w-100" disabled={isLoading}>
+                                    {isLoading ? 'Registering...' : 'Add Client'}
+                                </Button>
+
                             </Form>
                         </Card.Body>
                     </Card>

@@ -194,4 +194,57 @@ const adminVerifyUser = async (req, res) => {
 };
 
 
-module.exports = { registerUser, authUser, changePassword, getUsers, updateUser, verifyUser, adminVerifyUser};
+//registering client functionality
+const registerClient = asyncHandler(async (req, res) => {
+    const { firstName, lastName, email, phoneNumber, password, caregiverEmail } = req.body;
+
+    // check if email is in proper format
+    const emailRegex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
+    if (!emailRegex.test(email)) {
+        return res.status(400).json({ message: 'Invalid email format' });
+    }
+
+    //check if user exists
+    const userExists = await User.findOne({ email });
+    if (userExists) {
+        return res.status(400).json({ message: 'User already exists' });
+    }
+
+    // generate a verification token
+    const verificationToken = crypto.randomBytes(20).toString('hex');
+
+    const user = await User.create({
+        firstName,
+        lastName,
+        email,
+        phoneNumber,
+        password,
+        userType: 'client', 
+        caregiverEmail: caregiverEmail, 
+        verificationToken,
+        isVerified: false
+    });
+
+    if (user) {
+        const token = generateToken(user._id);
+        await sendVerificationEmail(user.email, user.firstName, verificationToken);
+
+        res.status(201).json({
+            _id: user._id,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            phoneNumber: user.phoneNumber,
+            userType: user.userType,
+            caregiverEmail: user.caregiverEmail,
+            isVerified: user.isVerified,
+            token,
+        });
+    } else {
+        res.status(400).json({ message: 'Invalid user data' });
+    }
+});
+
+
+
+module.exports = { registerUser, authUser, changePassword, getUsers, updateUser, verifyUser, adminVerifyUser, registerClient};

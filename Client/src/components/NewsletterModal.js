@@ -1,47 +1,52 @@
 import React from 'react';
-import { Modal, Button } from 'react-bootstrap';
+import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+import Form from 'react-bootstrap/Form';
 
-function NewsletterModal({ show, handleClose, handleSubmit, subject, setSubject, content, setContent, setFile }) {
-    return (
-        <Modal show={show} onHide={handleClose}>
-            <Modal.Header closeButton>
-                <Modal.Title>Edit Newsletter</Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <form onSubmit={handleSubmit}>
-                    <div>
-                        <label htmlFor="subject">Subject:</label>
-                        <input
-                            type="text"
-                            id="subject"
-                            value={subject}
-                            onChange={(e) => setSubject(e.target.value)}
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor="content">Content:</label>
-                        <textarea
-                            id="content"
-                            value={content}
-                            onChange={(e) => setContent(e.target.value)}
-                        ></textarea>
-                    </div>
-                    <div>
-                        <label htmlFor="file">File:</label>
-                        <input
-                            type="file"
-                            id="file"
-                            onChange={(e) => setFile(e.target.files[0])}
-                        />
-                    </div>
-                </form>
-            </Modal.Body>
-            <Modal.Footer>
-                <Button variant="secondary" onClick={handleClose}>Close</Button>
-                <Button variant="primary" onClick={handleSubmit}>Send Newsletter</Button>
-            </Modal.Footer>
-        </Modal>
-    );
-}
+const NewsletterModal = ({ show, handleClose, handleSubmit, subject, setSubject, content, setContent, setFile }) => {
+  return (
+    <Modal show={show} onHide={handleClose} centered>
+      <Modal.Header closeButton>
+        <Modal.Title>Edit Newsletter</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        <Form onSubmit={handleSubmit}>
+          <Form.Group className="mb-3" controlId="formBasicSubject">
+            <Form.Label>Subject:</Form.Label>
+            <Form.Control 
+              type="text" 
+              placeholder="Enter email subject" 
+              value={subject} 
+              onChange={(e) => setSubject(e.target.value)} 
+            />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="formBasicContent">
+            <Form.Label>Content:</Form.Label>
+            <Form.Control 
+              as="textarea" 
+              rows={3} 
+              placeholder="Enter email content" 
+              value={content} 
+              onChange={(e) => setContent(e.target.value)} 
+            />
+          </Form.Group>
+          <Form.Group className="mb-3" controlId="formBasicFile">
+            <Form.Label>File:</Form.Label>
+            <Form.Control 
+              type="file" 
+              onChange={(e) => setFile(e.target.files[0])} 
+            />
+          </Form.Group>
+          <Button variant="secondary" onClick={handleClose} className="me-2">
+            Close
+          </Button>
+          <Button variant="primary" type="submit">
+            Send Newsletter
+          </Button>
+        </Form>
+      </Modal.Body>
+    </Modal>
+  );
+};
 
 export default NewsletterModal;
