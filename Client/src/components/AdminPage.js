@@ -5,7 +5,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import NewsletterModal from './NewsletterModal';
-
+import withAuth from './WithAuth';
 
 
 
@@ -112,4 +112,4 @@ const AdminPage = () => {
     );
   };
   
-  export default AdminPage;
+  export default withAuth(AdminPage, "admin");

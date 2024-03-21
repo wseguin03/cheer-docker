@@ -5,7 +5,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
-
+import withAuth from './WithAuth';
 const CaregiverPage = () => {
     const [clientEmail, setClientEmail] = useState('');
     const [clientFirstName, setClientFirstName] = useState('');
@@ -144,4 +144,4 @@ const CaregiverPage = () => {
     );
 };
 
-export default CaregiverPage;
+export default withAuth(CaregiverPage, 'caregiver');
