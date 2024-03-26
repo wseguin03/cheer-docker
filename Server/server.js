@@ -10,6 +10,7 @@ const userRoutes = require('./routes/userRoutes');
 const multer = require('multer');
 const timesheet = require('./models/timesheet');
 const timesheetRoutes = require('./routes/timeSheetRoutes');
+const formRoutes = require('./routes/formRoutes');
 const storage = multer.memoryStorage();
 const upload = multer({storage: storage});
 // require('dotenv').config()
@@ -378,4 +379,4 @@ app.listen(port, () => {
 
 app.use('/api/users', userRoutes);
 app.use('/api/timesheets', timesheetRoutes);
-
+app.use('/api/forms', formRoutes)

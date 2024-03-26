@@ -5,8 +5,10 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import NewsletterModal from './NewsletterModal';
+import FormBuilderModal from './FormBuilderModal';
 import withAuth from './WithAuth';
-import { useNavigate } from 'react-router-dom'; // Correct import for useNavigate
+import { useNavigate } from 'react-router-dom'; 
+import FormsManager from './FormManager';
 
 
 
@@ -20,6 +22,14 @@ const AdminPage = () => {
   const [subject, setSubject] = useState('');
   const [content, setContent] = useState('');
   const [file, setFile] = useState(null);
+  const [showFormsManager, setShowFormsManager] = useState(false);
+
+
+  const [showFormBuilderModal, setShowFormBuilderModal] = useState(false);
+
+  const handleShowFormBuilderModal = () => setShowFormBuilderModal(true);
+  const handleCloseFormBuilderModal = () => setShowFormBuilderModal(false);
+
 
   const handleShowModal = () => setShowModal(true);
   const handleCloseModal = () => setShowModal(false);
@@ -38,7 +48,6 @@ const AdminPage = () => {
         formData.append('file', file);
     }
 
-    // Replace '/send-newsletter-with-attachment' with your actual endpoint
     try {
         const response = await fetch('/send-newsletter', {
             method: 'POST',
@@ -48,7 +57,7 @@ const AdminPage = () => {
         const result = await response.json();
         if (response.ok) {
             alert('Newsletter sent successfully!');
-            // Reset the form states and close modal here if needed
+            // Reset the form states and close modal here
             setSubject('');
             setContent('');
             setFile(null);
@@ -75,9 +84,11 @@ const AdminPage = () => {
           <Col md={4} className="mb-3">
             <Card>
               <Card.Body>
-                <Card.Title>Donor Information</Card.Title>
-                <Button variant="primary" className="m-2">Grants and Donors List</Button>
-                <Button variant="secondary" className="m-2">Current Applications</Button>
+                <Card.Title>Forms</Card.Title>
+                <Button variant="primary" className="m-2" onClick={handleShowFormBuilderModal}>Form Builder</Button>
+                <FormBuilderModal show={showFormBuilderModal} handleClose={handleCloseFormBuilderModal} />
+                <Button onClick={() => setShowFormsManager(true)}>View Forms</Button>
+      <FormsManager show={showFormsManager} handleClose={() => setShowFormsManager(false)} />
               </Card.Body>
             </Card>
           </Col>
