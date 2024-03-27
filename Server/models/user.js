@@ -25,17 +25,6 @@ const userSchema = mongoose.Schema({
         required: [true, 'Please provide a password'],
         minlength: 6
     },
-    confirmPassword: {
-        type: String,
-        required: [true, 'Please confirm your password'],
-        minlength: 6,
-        validate: {
-            validator: function (val) {
-                return val === this.password;
-            },
-            message: 'Passwords do not match'
-        }
-    },
     isVerified: {
         type: Boolean,
         default: false

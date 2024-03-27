@@ -8,16 +8,8 @@ const { sendConfirmation } = require('../utils/mailer');
 
 const crypto = require('crypto');
 const registerUser = asyncHandler(async (req, res) => {
-    const { firstName, lastName, email, phoneNumber, password, confirmPassword, userType } = req.body;
+    const { firstName, lastName, email, phoneNumber, password, userType } = req.body;
 
-    console.log("Password: ", password)
-    console.log("Confirm password: ", confirmPassword)
-
-    // Check if passwords match
-    // if (password !== confirmPassword) {
-    //     return res.status(400).json({ message: 'usercontroller says: Passwords do not match' });
-    // }
-    
     // check if email is in proper format
     const emailRegex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
     if (!emailRegex.test(email)) {
@@ -42,7 +34,6 @@ const registerUser = asyncHandler(async (req, res) => {
         email,
         phoneNumber,
         password,
-        confirmPassword,
         userType,
         verificationToken,
         isVerified: false
@@ -79,7 +70,7 @@ const registerUser = asyncHandler(async (req, res) => {
     }
 });
 const authUser = asyncHandler(async (req, res) => {
-    const {email, password, confirmPassword} = req.body;
+    const {email, password} = req.body;
 
     if (!email) {
         res.status(400);
@@ -90,15 +81,6 @@ const authUser = asyncHandler(async (req, res) => {
         res.status(400);
         throw new Error('Password must be provided');
     }
-    if (!confirmPassword) {
-        res.status(400);
-        throw new Error('Please confirm password');
-    }
-    if (password !== confirmPassword) {
-        return res.status(400).json({ message: 'Passwords do not match' });
-    }
-
-
 
     const user = await User.findOne({email});
 

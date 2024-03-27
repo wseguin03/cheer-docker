@@ -9,11 +9,8 @@ function Header() {
     const navigate = useNavigate();
 
     const logoutHandler = () => {
-        const confirmed = window.confirm('Are you sure you want to logout?');
-        if (confirmed) {
         localStorage.removeItem('userInfo');
         navigate('/');
-        }
     }
 
     return (
@@ -25,7 +22,6 @@ function Header() {
                     <Nav className="ml-auto">
                         <Nav.Link as={NavLink} to='/contact'>Contact</Nav.Link>
                         <Nav.Link as={NavLink} to='/sponsors'>Sponsors</Nav.Link>
-                        <Nav.Link as={NavLink} to='/gallery'>Gallery</Nav.Link>
                         {userInfo.userType === 'client'  && <Nav.Link as={NavLink} to='/client'>Client</Nav.Link>}
                         {userInfo.userType === 'caregiver'  && <Nav.Link as={NavLink} to='/caregiver'>Caregiver</Nav.Link>}
                         {userInfo.userType === 'admin'  && <Nav.Link as={NavLink} to='/admin'>Admin</Nav.Link>}

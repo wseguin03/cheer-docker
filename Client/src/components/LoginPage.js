@@ -9,7 +9,6 @@ const LoginPage = () => {
   const navigate = useNavigate(); // Correctly use useNavigate instead of useHistory
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
   const [firstName, setFirstName] = useState(''); // New state variable
   const [lastName, setLastName] = useState(''); // New state variable
   const [phoneNumber, setPhoneNumber] = useState(''); // New state variable
@@ -53,7 +52,6 @@ const LoginPage = () => {
   const handleRegister = async (event) => {
     event.preventDefault();
     try {
-      
       const response = await fetch('/api/users/', {
         method: 'POST',
         headers: {
@@ -62,7 +60,6 @@ const LoginPage = () => {
         body: JSON.stringify({
           email: username,
           password: password,
-          confirmPassword: confirmPassword,
           firstName: firstName,
           lastName: lastName,
           phoneNumber: phoneNumber
@@ -72,30 +69,17 @@ const LoginPage = () => {
       if (response.ok) {
         setMessage('Registration successful! Please check your email to verify your account.');
         setRegistering(false); // Switch back to login form
-      } else if (response.status === 400) {
-        setMessage('Email has already been used and is registered as a user already.');
       } else {
         setMessage(data.message || 'An error occurred during registration.');
       }
     } catch (error) {
       console.error('Registration error:', error);
       setMessage('Failed to register. Please try again.');
-      // Only allow registration is password is longer than 6 characters
-      if (password.length < 6) {
-        setMessage('Password must be at least 6 characters long.');
-      }
-      if (phoneNumber.length !== 10) {
-        setMessage('Please enter valid phone number.')
-      }
-      if (confirmPassword !== password) {
-        setMessage('Passwords do not match');
-      }
     }
   };
 
   const handleSubmit = (event) => {
     if (registering) {
-      
       handleRegister(event);
     } else {
       handleLogin(event);
@@ -164,23 +148,12 @@ const LoginPage = () => {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </Form.Group>
-            {registering && (
-              <Form.Group className="mb-3" controlId="formConfirmPassword">
-                <Form.Label>Confirm Password</Form.Label>
-                <Form.Control
-                  type="password"
-                  placeholder="Confirm Password"
-                  value={confirmPassword}
-                  onChange={(e) => setConfirmPassword(e.target.value)}
-                />
-              </Form.Group>
-              )}
 
             <Button variant="primary" type="submit" className="w-100 mb-3">
               {registering ? 'Register' : 'Login'}
             </Button>
 
-            <Button variant="secondary" className="w-100" onClick={() => { setRegistering(!registering); setMessage(''); setConfirmPassword('');}}>
+            <Button variant="secondary" className="w-100" onClick={() => { setRegistering(!registering); setMessage(''); }}>
               {registering ? 'Switch to Login' : 'Switch to Register'}
             </Button>
           </Form>
