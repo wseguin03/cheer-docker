@@ -32,6 +32,10 @@ const CaregiverPage = () => {
         navigate('/forms-caregiver'); // Replace '/forms' with the path to your forms page
     };
 
+    const handleCalendar = () =>{
+        navigate('/calendar');
+      }
+
     const handleClientSubmit = async (e) => {
 
         e.preventDefault();
@@ -133,7 +137,7 @@ const CaregiverPage = () => {
                             <Card.Title>Upcoming Events</Card.Title>
                             <Button onClick={navigateToForms} variant="secondary">View Forms</Button>
                             <Button variant="success" className="m-2">Newsletter</Button>
-                            <Button variant="warning" className="m-2">Events of the Month</Button>
+                            <Button variant="warning" onClick={handleCalendar} className="m-2">View Event Calendar</Button>
                         </Card.Body>
                     </Card>
                 </Col>
