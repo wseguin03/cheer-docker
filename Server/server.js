@@ -403,6 +403,34 @@ app.post('/api/forms/submit', async (req, res) => {
   }
 });
 
+app.get('/filledForms/get-all', async (req, res) => {
+  try {
+    const formSubmissions = await FormSubmission.find()
+      .populate('formId') // If you want to include details of the form itself
+      .exec();
+
+    res.status(200).json(formSubmissions);
+  } catch (error) {
+    console.error('Error fetching forms:', error);
+    res.status(500).json({ message: 'Failed to get forms' });
+  }
+});
+
+app.delete('/delete-filled-form/:formId', async (req, res) => {
+  try {
+    const { formId } = req.params;
+    const result = await FormSubmission.findByIdAndDelete(formId);
+
+    if (!result) {
+      return res.status(404).send('The form with the given ID was not found.');
+    }
+
+    res.send(result);
+  } catch (error) {
+    console.error('Error deleting the form:', error);
+    res.status(500).send('Error deleting the form');
+  }
+});
 
 
 
