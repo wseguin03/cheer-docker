@@ -44,6 +44,23 @@ const ContactPage = () => {
 
   return (
     <Container className="mt-5">
+      <Row className="justify-content-md-center mb-4">
+        <Col md={6}>
+          <Card className="shadow-lg" border="primary">
+            <Card.Body>
+              <Card.Title className="text-center text-primary">Our Contact Info</Card.Title>
+              <p className="text-center">
+                Address: 8685 Rockglen Rd. Arkona ON, N0M 1B0
+                <br />
+                Send us an email: ongoinglivinglearning@gmail.com
+                <br />
+                Phone Number: to come… we’re getting a landline put in our office next month.
+                <br />
+              </p>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
       <Row className="justify-content-md-center">
         <Col md={6}>
           <Card className="shadow-lg" border="primary">
@@ -91,7 +108,75 @@ const ContactPage = () => {
           </Card>
         </Col>
       </Row>
-    </Container>
+      <Row className="justify-content-md-center mb-4">
+        <Col md={6}>
+          <Card className="shadow-lg" border="primary">
+            <Card.Body>
+              <Card.Title className="text-center text-primary">Hours of Operation</Card.Title>
+              <br/>
+              <Row>
+              <Col md={4}>
+              <Card.Subtitle className='text-center text-secondary' >CHEER Group 1</Card.Subtitle>
+              <p className="text-center">
+                Monday: 8:00-4:00
+                <br />
+                Tuesday: 8:00-4:00
+                <br />
+                Wednesday: 10:00-4:00
+                <br />
+                Thursday: 8:00-4:00
+                <br />
+                Friday: 8:00-4:00
+                <br />
+                Saturday: CLOSED
+                <br />
+                Sunday: CLOSED
+                <br />
+              </p>
+              <p className="text-center text-secondary mb-6">
+              *outing times may differ*
+              </p>
+              </Col>
+              <Col md={4}>
+              <Card.Subtitle className='text-center text-secondary' >CHEER Connections</Card.Subtitle>
+              <p className="text-center">
+                Summer Nights
+                <br />
+                Friday: 5:00-9:00
+                <br />
+              </p>
+              </Col>
+              <Col md={4}>
+              <Card.Subtitle className='text-center text-secondary' >CHEER Works</Card.Subtitle>
+              <p className="text-center">
+                Monday: CLOSED
+                <br />
+                Tuesday: CLOSED
+                <br />
+                Wednesday: 10:00-8:00
+                <br />
+                Thursday: 10:00-8:00
+                <br />
+                Friday: 10:00-8:00
+                <br />
+                Saturday: 8:00-8:00
+                <br />
+                Sunday: 8:00-8:00 
+                <br />
+              </p>
+              <p className="text-center text-secondary mb-6">
+            *Hours may differ for long weekends*
+            *Store opens May 18th 2024*
+            </p>
+            
+              </Col>
+            </Row>
+            </Card.Body>
+          </Card>
+        </Col>
+      </Row>
+      </Container>
+
   );
 };
 
