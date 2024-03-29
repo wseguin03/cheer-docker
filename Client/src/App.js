@@ -13,7 +13,6 @@ import StaffPage from './components/StaffPage';
 import Calendar from './components/Calendar';
 import CareGiverForms from './components/CareGiverForms';
 import Gallery from './components/Gallery';
-// import './components/bootstrap-custom.scss';
 
 
 function App() {

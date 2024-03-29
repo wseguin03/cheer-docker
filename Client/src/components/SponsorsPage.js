@@ -24,7 +24,7 @@ const SponsorsPage = () => {
   const SponsorCard = ({ image, title }) => {
     return (
       <Col className=" justify-content-center align-items-center">
-        <motion.div initial={{ opacity: 0, y: -20}} animate={{ opacity: 1, y: 0}} transition={{ duration: 0.7 }}>
+        <motion.div initial={{ opacity: 0, y: -20, scale:1}} whileHover={{ opacity: 1, scale: 1.1, rotate: 360 }} animate={{ opacity: 1, y: 0}} transition={{ duration: 0.7 }}>
           <Card className='border-0' style={{ backgroundColor: 'rgba(255, 255, 255, 0)' }}>
             <Card.Body className="d-flex flex-column justify-content-between align-items-center">
             <div className="text-center">
@@ -51,22 +51,7 @@ const SponsorsPage = () => {
         <SponsorCard image={sunsetImg} title="Sunset Community Foundation" />
         <SponsorCard image={ontarioImg} title="Ontario Caregivers Association" />
       </Row>        
-        <Col>
-          <Card>
-            <Card.Body>
-              <Card.Title>Contact Info</Card.Title>
-              <Button variant="success" onClick={handleContactClick}>Get in Touch</Button>
-            </Card.Body>
-          </Card>
-        </Col>
-        <Col>
-          <Card>
-            <Card.Body>
-              <Card.Title>Photo Gallery</Card.Title>
-              <Button variant="info" onClick={handleGalleryClick}>Browse Gallery</Button>
-            </Card.Body>
-          </Card>
-        </Col>
+        
     </Container>
   );
 };
