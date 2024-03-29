@@ -1,0 +1,7 @@
+.photo-card {
+    transition: transform 0.3s ease; /* Smooth transition for zoom effect */
+  }
+  
+.photo-card:hover {
+    transform: scale(1.05); /* Zoom in effect on hover */
+  }

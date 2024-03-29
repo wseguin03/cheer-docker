@@ -10,11 +10,18 @@ const userRoutes = require('./routes/userRoutes');
 const multer = require('multer');
 const timesheet = require('./models/timesheet');
 const timesheetRoutes = require('./routes/timeSheetRoutes');
+const formRoutes = require('./routes/formRoutes');
 const storage = multer.memoryStorage();
 const upload = multer({storage: storage});
+const Form = require('./models/forms'); // Adjust the path according to your file structure
+const FormSubmission = require('./models/FormSubmission'); // Adjust the path as necessary
+
+
+
 // require('dotenv').config()
 // console.log("TOKEN"+ process.env.JWT_SECRET)
 // Connect to MongoDB
+
 mongoose.connect('mongodb+srv://temp_user:admin@cheer.gzid9bc.mongodb.net/?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true });
 
 mongoose.connection.once('open', function () {
@@ -362,6 +369,69 @@ app.delete('/delete-events/:id', async (req, res) => {
 
 
 
+//endpoint to get forms from the database
+
+// Endpoint to get all visible forms from the database
+app.get('/forms/get-all', async (req, res) => {
+  try {
+    const visibleForms = await Form.find({ isVisible: true });
+    res.status(200).json(visibleForms);
+  } catch (error) {
+    console.error('Error fetching forms:', error);
+    res.status(500).json({ message: 'Failed to get forms' });
+  }
+});
+
+app.post('/api/forms/submit', async (req, res) => {
+  try {
+    const { formId, answers, submittedBy } = req.body;  // Make sure 'submittedBy' is provided or derive it from the user session/authentication context
+
+    // Optional: Validate formId, answers, and submittedBy as needed
+
+    const newSubmission = new FormSubmission({
+      formId,
+      answers,
+      submittedBy // You might want to get this from the session or token if using authentication
+    });
+
+    await newSubmission.save();
+
+    res.status(201).json({ message: 'Form submitted successfully', submissionId: newSubmission._id });
+  } catch (error) {
+    console.error('Failed to save form submission:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+app.get('/filledForms/get-all', async (req, res) => {
+  try {
+    const formSubmissions = await FormSubmission.find()
+      .populate('formId') // If you want to include details of the form itself
+      .exec();
+
+    res.status(200).json(formSubmissions);
+  } catch (error) {
+    console.error('Error fetching forms:', error);
+    res.status(500).json({ message: 'Failed to get forms' });
+  }
+});
+
+app.delete('/delete-filled-form/:formId', async (req, res) => {
+  try {
+    const { formId } = req.params;
+    const result = await FormSubmission.findByIdAndDelete(formId);
+
+    if (!result) {
+      return res.status(404).send('The form with the given ID was not found.');
+    }
+
+    res.send(result);
+  } catch (error) {
+    console.error('Error deleting the form:', error);
+    res.status(500).send('Error deleting the form');
+  }
+});
+
 
 
 
@@ -378,4 +448,4 @@ app.listen(port, () => {
 
 app.use('/api/users', userRoutes);
 app.use('/api/timesheets', timesheetRoutes);
-
+app.use('/api/forms', formRoutes)

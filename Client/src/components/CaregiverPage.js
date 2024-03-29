@@ -6,6 +6,9 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import withAuth from './WithAuth';
+import { useNavigate } from 'react-router-dom'; // Correct import for useNavigate
+
+
 const CaregiverPage = () => {
     const [clientEmail, setClientEmail] = useState('');
     const [clientFirstName, setClientFirstName] = useState('');
@@ -15,13 +18,23 @@ const CaregiverPage = () => {
     const [email, setEmail] = useState(''); // State for the newsletter email
     const [message, setMessage] = useState(''); // State for displaying messages to the user
     const [isLoading, setIsLoading] = useState(false); // State for loading indicator
-
+    const navigate = useNavigate();
 
     // Handler for client information change
     const handleClientInfoChange = (setter) => (e) => setter(e.target.value);
 
     // Handler for the newsletter email change
     const handleEmailChange = (e) => setEmail(e.target.value);
+
+
+        // Add a navigateToForms function to handle navigation
+    const navigateToForms = () => {
+        navigate('/forms-caregiver'); // Replace '/forms' with the path to your forms page
+    };
+
+    const handleCalendar = () =>{
+        navigate('/calendar');
+      }
 
     const handleClientSubmit = async (e) => {
 
@@ -122,8 +135,9 @@ const CaregiverPage = () => {
                     <Card>
                         <Card.Body>
                             <Card.Title>Upcoming Events</Card.Title>
+                            <Button onClick={navigateToForms} variant="secondary">View Forms</Button>
                             <Button variant="success" className="m-2">Newsletter</Button>
-                            <Button variant="warning" className="m-2">Events of the Month</Button>
+                            <Button variant="warning" onClick={handleCalendar} className="m-2">View Event Calendar</Button>
                         </Card.Body>
                     </Card>
                 </Col>
@@ -155,7 +169,7 @@ const CaregiverPage = () => {
                 </Col>
             </Row>
             <Row className="justify-content-center mt-4">
-                <Col md={6}>
+                <Col md={6}> 
                     <Card>
                         <Card.Body>
                             <Card.Title>Add a Client</Card.Title>

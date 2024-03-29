@@ -7,6 +7,9 @@ import 'react-big-calendar/lib/css/react-big-calendar.css';
 document.body.style.backgroundColor = "#ece9d2";
 
 const localizer = momentLocalizer(moment);
+const userInfo = localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : null;
+const userType = userInfo.userType;
+
 
 class AddEventForm extends React.Component {
   state = {
@@ -48,6 +51,8 @@ class AddEventForm extends React.Component {
   
 
   render() {
+    const userInfo = localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : null;
+    const userType = userInfo ? userInfo.userType : '';
     return (
       <form onSubmit={this.handleSubmit} style={{
         marginTop: '20px',
@@ -130,6 +135,7 @@ class AddEventForm extends React.Component {
 }
 
 class MyCalendar extends React.Component {
+  
   state = {
     events: [],
   };
@@ -163,6 +169,11 @@ class MyCalendar extends React.Component {
 
   //delete an event
   deleteEvent = (eventId) => {
+    const userType = localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')).userType : '';
+    if (userType !== 'admin') {
+      //alert('Only admins can delete events.');
+      return; // Exit the method early if not admin
+    }
     const confirmDelete = window.confirm('Are you sure you want to delete this event?');
     if (confirmDelete) {
       // backend url
@@ -198,6 +209,8 @@ class MyCalendar extends React.Component {
   };
 
   render() {
+    const userInfo = localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : null;
+    const userType = userInfo ? userInfo.userType : '';
     return (
       <div style={{ margin: '20px' }}>
         <div style={{
@@ -217,7 +230,7 @@ class MyCalendar extends React.Component {
             onSelectEvent={event => this.deleteEvent(event._id)}
           />
         </div>
-        <AddEventForm addEvent={this.addEvent} />
+        {userType === 'admin' && <AddEventForm addEvent={this.addEvent} />}
       </div>
     );
   }

@@ -11,7 +11,7 @@
  * Copyright 2011-2023 The Bootstrap Authors
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  */
-@import url(https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;700&display=swap);
+@import url(https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap);
 
 :root,
 [data-bs-theme=light] {
@@ -38,12 +38,12 @@
     --bs-gray-700: #5a5a5a;
     --bs-gray-800: #343a40;
     --bs-gray-900: #212529;
-    --bs-primary: #78c2ad;
-    --bs-secondary: #f3969a;
+    --bs-primary: #607043;
+    --bs-secondary: #E5AB98;
     --bs-success: #56cc9d;
-    --bs-info: #6cc3d5;
-    --bs-warning: #ffce67;
-    --bs-danger: #ff7851;
+    --bs-info: #5F4F59;
+    --bs-warning: #DB7859;
+    --bs-danger: #EDE9D2;
     --bs-light: #f8f9fa;
     --bs-dark: #343a40;
     --bs-primary-rgb: 120, 194, 173;
@@ -80,8 +80,8 @@
     --bs-dark-border-subtle: #aaa;
     --bs-white-rgb: 255, 255, 255;
     --bs-black-rgb: 0, 0, 0;
-    --bs-font-sans-serif: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-    --bs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    --bs-font-sans-serif: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", "Liberation Sans", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    --bs-font-monospace: "Poppins", SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
     --bs-gradient: linear-gradient(180deg, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0));
     --bs-body-font-family: var(--bs-font-sans-serif);
     --bs-body-font-size: 1rem;
@@ -237,7 +237,7 @@ h5,
 h6 {
     margin-top: 0;
     margin-bottom: .5rem;
-    font-family: Montserrat, -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-family: Poppins, Montserrat, -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     font-weight: 500;
     line-height: 1.2;
     color: var(--bs-heading-color)
