@@ -9,6 +9,8 @@ import contactImg from '../icons/contact.png'
 import loginImg from '../icons/login.png'
 import logoutImg from '../icons/logout.png'
 import sponsorImg from '../icons/sponsor.png'
+import galleryImg from '../icons/gallery.png'
+
 
 
 
@@ -32,6 +34,7 @@ function Header() {
                     <Nav className="ml-auto">
                         <Nav.Link as={NavLink} to='/contact'><img src={contactImg}/> Contact</Nav.Link>
                         <Nav.Link as={NavLink} to='/sponsors'><img src={sponsorImg}/> Sponsors</Nav.Link>
+                        <Nav.Link as={NavLink} to='/gallery'><img src={galleryImg}/> Gallery</Nav.Link>
                         {userInfo.userType === 'client'  && <Nav.Link as={NavLink} to='/client'><img src={accountImg}/> Client</Nav.Link>}
                         {userInfo.userType === 'caregiver'  && <Nav.Link as={NavLink} to='/caregiver'><img src={accountImg}/> Caregiver</Nav.Link>}
                         {userInfo.userType === 'admin'  && <Nav.Link as={NavLink} to='/admin'><img src={adminImg}/> Admin</Nav.Link>}

@@ -12,6 +12,9 @@ import LoginPage from './components/LoginPage';
 import StaffPage from './components/StaffPage';
 import Calendar from './components/Calendar';
 import CareGiverForms from './components/CareGiverForms';
+import Gallery from './components/Gallery';
+// import './components/bootstrap-custom.scss';
+
 
 function App() {
   return (
@@ -28,6 +31,7 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/calendar" element={<Calendar />} />
         <Route path="/forms-caregiver" element={<CareGiverForms />} />
+        <Route path='/gallery' element={<Gallery/>} />
         
       </Routes>
     </BrowserRouter>
