@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { jwtDecode } from 'jwt-decode';
-import { Form, Button, Row, Col, Container } from 'react-bootstrap';
+import { Form, Button, Row, Col, Container, Alert } from 'react-bootstrap';
 import ModularHeader from './ModularHeader';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -17,6 +17,8 @@ const getMonday = (d) => {
 const StaffPage = () => {
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
     const userId = userInfo ? userInfo._id : null;
+    const firstName = userInfo ? userInfo.firstName : null;
+    const lastName = userInfo ? userInfo.lastName : null;
    
     console.log(userId);
     const [hours, setHours] = useState({
@@ -37,29 +39,46 @@ const StaffPage = () => {
         });
     };
 
+    const [showAlert, setShowAlert] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('');
+    
     const handleSubmit = (event) => {
         event.preventDefault();
         const formattedDate = selectedWeek.toISOString().split('T')[0];
-        console.log("FORMATED"+formattedDate);
-        console.log("USERID"+userId);
+        const token = localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')).token : null;
+    
         fetch('/api/timesheets/', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify({
                 user: userId,
                 weekOf: formattedDate,
                 ...hours
             }),
+        })
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(data => {
+                    throw new Error(data.error);
+                });
+            }
+            setShowAlert(true);
+        })
+        .catch(error => {
+            console.error('There has been a problem with your fetch operation:', error);
+            setErrorMessage(error.message);
         });
     };
-
     return (
         <div>
             <Row><br></br></Row>
             <Container style={{ maxWidth: '600px' }}>
                 <ModularHeader title="Time Sheet"/>
+                {showAlert && <Alert variant='success'>Timesheet submitted successfully!</Alert>}
+                {errorMessage && <Alert variant='danger'>{errorMessage}</Alert>}
                 <Form onSubmit={handleSubmit}>
                     <Form.Group as={Row}>
                         <Form.Label column sm="2">Week of</Form.Label>

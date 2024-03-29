@@ -25,6 +25,8 @@ function Header() {
                         {userInfo.userType === 'client'  && <Nav.Link as={NavLink} to='/client'>Client</Nav.Link>}
                         {userInfo.userType === 'caregiver'  && <Nav.Link as={NavLink} to='/caregiver'>Caregiver</Nav.Link>}
                         {userInfo.userType === 'admin'  && <Nav.Link as={NavLink} to='/admin'>Admin</Nav.Link>}
+                        {userInfo.userType === 'admin'  && <Nav.Link as={NavLink} to='/viewtimesheets'>View Time Sheets</Nav.Link>}
+
                         {userInfo.userType === 'staff'  && <Nav.Link as={NavLink} to='/staff'>Staff</Nav.Link>}
 
                         {userInfo.token ? (

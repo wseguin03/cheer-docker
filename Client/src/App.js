@@ -11,7 +11,7 @@ import AdminPage from './components/AdminPage';
 import LoginPage from './components/LoginPage';
 import StaffPage from './components/StaffPage';
 import Calendar from './components/Calendar';
-
+import ViewTimeSheets from './components/ViewTimeSheets';
 function App() {
   return (
     <BrowserRouter>
@@ -26,6 +26,7 @@ function App() {
         <Route path="/staff" element={<StaffPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/calendar" element={<Calendar />} />
+        <Route path="/viewtimesheets" element={<ViewTimeSheets />} />
 
         
       </Routes>
