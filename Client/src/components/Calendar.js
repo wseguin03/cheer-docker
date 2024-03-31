@@ -8,7 +8,6 @@ document.body.style.backgroundColor = "#ece9d2";
 
 const localizer = momentLocalizer(moment);
 const userInfo = localStorage.getItem('userInfo') ? JSON.parse(localStorage.getItem('userInfo')) : null;
-const userType = userInfo.userType;
 
 
 class AddEventForm extends React.Component {
