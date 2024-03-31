@@ -10,6 +10,7 @@ import withAuth from './WithAuth';
 import { useNavigate } from 'react-router-dom'; 
 import FormsManager from './FormManager';
 import Modal from 'react-bootstrap/Modal';
+import AddStaffMember from './AddStaffMember'; 
 
 const FilledFormsModal = ({ show, handleClose, forms, setForms }) => {
   const deleteForm = async (formId) => {
@@ -75,6 +76,7 @@ const AdminPage = () => {
   const [showUserModal, setShowUserModal] = useState(false);
   const [userModalTitle, setUserModalTitle] = useState('');
   const [modalUsers, setModalUsers] = useState([]); 
+
 
 
   const [showFormBuilderModal, setShowFormBuilderModal] = useState(false);
@@ -192,7 +194,7 @@ const AdminPage = () => {
 
 
 return (
-  <Container className="caregiver-dashboard">
+  <Container className="admin-dashboard">
     <h1 className="text-center my-4">Admin Dashboard</h1>
     <Row className="text-center">
       <Col md={4} className="mb-3">
@@ -232,18 +234,22 @@ return (
             <Card.Title>Clients and Caregiver Info</Card.Title>
             <Button variant="primary" className="m-2" onClick={fetchClients}>Fetch Client Info</Button>
             <Button variant="secondary" className="m-2" onClick={fetchCaregivers}>Fetch Caregiver Info</Button>
-            <Button variant="info" className="m-2"onClick={fetchStaff}>Fetch Staff Info</Button>
+            <Button variant="info" className="m-2" onClick={fetchStaff}>Fetch Staff Info</Button>
           </Card.Body>
         </Card>
+      </Col>
+    </Row>
+    <Row className="justify-content-md-center mt-4">
+      <Col md={6}>
+        <AddStaffMember />
       </Col>
     </Row>
     <FilledFormsModal
       show={showFilledFormsModal}
       handleClose={() => setShowFilledFormsModal(false)}
       forms={filledForms}
-      setForms={setFilledForms} 
+      setForms={setFilledForms}
     />
-    {/* User Info Modal for displaying Clients, Caregivers, and Staff */}
     <Modal show={showUserModal} onHide={() => setShowUserModal(false)} size="lg">
       <Modal.Header closeButton>
         <Modal.Title>{userModalTitle}</Modal.Title>
@@ -269,7 +275,6 @@ return (
     </Modal>
   </Container>
 );
-
 
   };
   
