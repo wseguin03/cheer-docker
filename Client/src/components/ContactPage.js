@@ -5,6 +5,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
+import './ContactPage.css'
 
 const ContactPage = () => {
   const [fullName, setFullName] = useState('');
@@ -43,6 +44,7 @@ const ContactPage = () => {
   };
 
   return (
+    <div className="background-container">
     <Container className="mt-5">
       <Row>
         <Col md={6}>
@@ -148,6 +150,7 @@ const ContactPage = () => {
         </Col>
       </Row>
     </Container>
+    </div>
   );
 };  
 
