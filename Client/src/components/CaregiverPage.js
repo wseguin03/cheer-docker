@@ -6,7 +6,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import withAuth from './WithAuth';
-import { useNavigate } from 'react-router-dom'; // Correct import for useNavigate
+import { useNavigate } from 'react-router-dom'; 
 
 
 const CaregiverPage = () => {
@@ -121,38 +121,19 @@ const CaregiverPage = () => {
         <Container className="caregiver-dashboard">
             <h1 className="text-center my-4">Hello Caregivers!</h1>
             <Row className="text-center">
-                <Col md={4} className="mb-3">
-                    <Card>
-                        <Card.Body>
-                            <Card.Title>Your Profile</Card.Title>
-                            <Button variant="primary" className="m-2">Profile Picture</Button>
-                            <Button variant="secondary" className="m-2">Bio</Button>
-                            <Button variant="secondary" className="m-2">Relationship to CHEER Member</Button>
-                        </Card.Body>
-                    </Card>
-                </Col>
-                <Col md={4} className="mb-3">
+                {/* Upcoming Events Card */}
+                <Col md={4}>
                     <Card>
                         <Card.Body>
                             <Card.Title>Upcoming Events</Card.Title>
-                            <Button onClick={navigateToForms} variant="secondary">View Forms</Button>
-                            <Button variant="success" className="m-2">Newsletter</Button>
+                            <Button onClick={navigateToForms} variant="secondary" className="m-2">View Forms</Button>
                             <Button variant="warning" onClick={handleCalendar} className="m-2">View Event Calendar</Button>
                         </Card.Body>
                     </Card>
                 </Col>
+                
+                {/* Newsletter Signup Card */}
                 <Col md={4}>
-                    <Card>
-                        <Card.Body>
-                            <Card.Title>Contact Information</Card.Title>
-                            <Button variant="info" className="m-2">Your Phone Number</Button>
-                            <Button variant="dark" className="m-2">Your Email</Button>
-                        </Card.Body>
-                    </Card>
-                </Col>
-            </Row>
-            <Row className="justify-content-center">
-                <Col md={6}>
                     <Card>
                         <Card.Body>
                             <Card.Title>Newsletter Signup</Card.Title>
@@ -162,14 +143,14 @@ const CaregiverPage = () => {
                                     <Form.Control type="email" placeholder="Enter email" value={email} onChange={handleEmailChange} required />
                                     <Form.Text className="text-muted">We'll never share your email with anyone else.</Form.Text>
                                 </Form.Group>
-                                <Button variant="primary" type="submit">Sign up</Button>
+                                <Button variant="primary" type="submit" className="mt-2">Sign up</Button>
                             </Form>
                         </Card.Body>
                     </Card>
                 </Col>
-            </Row>
-            <Row className="justify-content-center mt-4">
-                <Col md={6}> 
+                
+                {/* Add a Client Card */}
+                <Col md={4}>
                     <Card>
                         <Card.Body>
                             <Card.Title>Add a Client</Card.Title>
@@ -192,12 +173,11 @@ const CaregiverPage = () => {
                                 </Form.Group>
                                 <Form.Group controlId="clientPassword">
                                     <Form.Label>Password</Form.Label>
-                                    <Form.Control type="text" placeholder="Enter client's password" value={clientPassword} onChange={handleClientInfoChange(setClientPassword)} required />
+                                    <Form.Control type="password" placeholder="Enter client's password" value={clientPassword} onChange={handleClientInfoChange(setClientPassword)} required />
                                 </Form.Group>
-                                <Button variant="primary" type="submit" className="w-100" disabled={isLoading}>
+                                <Button variant="primary" type="submit" className="w-100 mt-3" disabled={isLoading}>
                                     {isLoading ? 'Registering...' : 'Add Client'}
                                 </Button>
-
                             </Form>
                         </Card.Body>
                     </Card>
@@ -205,6 +185,6 @@ const CaregiverPage = () => {
             </Row>
         </Container>
     );
-};
+    };
 
 export default withAuth(CaregiverPage, 'caregiver');
