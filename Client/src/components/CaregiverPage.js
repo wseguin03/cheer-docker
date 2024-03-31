@@ -7,7 +7,7 @@ import Col from 'react-bootstrap/Col';
 import Form from 'react-bootstrap/Form';
 import withAuth from './WithAuth';
 import { useNavigate } from 'react-router-dom'; // Correct import for useNavigate
-
+import './Caregiver.css'
 
 const CaregiverPage = () => {
     const [clientEmail, setClientEmail] = useState('');
@@ -118,6 +118,7 @@ const CaregiverPage = () => {
 
 
     return (
+        <div className='background-container'>
         <Container className="caregiver-dashboard">
             <h1 className="text-center my-4">Hello Caregivers!</h1>
             <Row className="text-center">
@@ -204,6 +205,7 @@ const CaregiverPage = () => {
                 </Col>
             </Row>
         </Container>
+        </div>
     );
 };
 

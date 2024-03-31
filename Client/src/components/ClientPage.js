@@ -8,6 +8,7 @@ import Modal from 'react-bootstrap/Modal';
 import SimpleClickerGame from './SimpleClickerGame';
 import KeyboardClickerGame from './KeyboardClickerGame';
 import Form from 'react-bootstrap/Form';
+import './ClientPage.css'
 
 const ClientPage = () => {
   const [showGameModal, setShowGameModal] = useState(false);
@@ -25,6 +26,7 @@ const ClientPage = () => {
 
 
   return (
+<div className="background-container"> {/* Container for the background image */}
     <Container className="client-dashboard">
       <h1 className="text-center my-4">Welcome to Your Dashboard!</h1>
       <Row className="text-center">
@@ -102,8 +104,22 @@ const ClientPage = () => {
     <Button variant="primary" onClick={handleCloseAboutModal}>Save Changes</Button>
   </Modal.Footer>
 </Modal>
+    
 
     </Container>
+    <div className='space'>  {/* happy easter -- this is an easter egg */}
+    <h1 >h</h1>
+    <h1 >h</h1>
+    <h1 >h</h1>
+    <h1 >h</h1>
+    <h1 >h</h1>
+    <h1 >h</h1>
+    <h1 >h</h1>
+    <h1 >h</h1>
+    </div>
+
+
+    </div>
   );
 };
 
