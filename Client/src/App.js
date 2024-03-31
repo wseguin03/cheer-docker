@@ -11,6 +11,7 @@ import AdminPage from './components/AdminPage';
 import LoginPage from './components/LoginPage';
 import StaffPage from './components/StaffPage';
 import Calendar from './components/Calendar';
+import ViewTimeSheets from './components/ViewTimeSheets';
 import CareGiverForms from './components/CareGiverForms';
 import Gallery from './components/Gallery';
 
@@ -29,6 +30,8 @@ function App() {
         <Route path="/staff" element={<StaffPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/calendar" element={<Calendar />} />
+        <Route path="/viewtimesheets" element={<ViewTimeSheets />} />
+
         <Route path="/forms-caregiver" element={<CareGiverForms />} />
         <Route path='/gallery' element={<Gallery/>} />
         

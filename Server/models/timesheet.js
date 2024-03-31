@@ -2,7 +2,16 @@ const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs')
 
 const TimeSheetSchema = new mongoose.Schema({
+    
     email: {
+        type: String,
+        required: true
+    },
+    firstName: {
+        type: String,
+        required: true
+    },
+    lastName: {
         type: String,
         required: true
     },
