@@ -87,6 +87,7 @@ const LoginPage = () => {
   };
 
   return (
+    <div className="background-container">
     <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: "100vh" }}>
       <Card style={{ width: '400px' }} className="p-4">
         <Card.Body>
@@ -160,6 +161,7 @@ const LoginPage = () => {
         </Card.Body>
       </Card>
     </Container>
+    </div>
   );
 };
 

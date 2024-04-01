@@ -15,6 +15,7 @@ const storage = multer.memoryStorage();
 const upload = multer({storage: storage});
 const Form = require('./models/forms'); // Adjust the path according to your file structure
 const FormSubmission = require('./models/FormSubmission'); // Adjust the path as necessary
+const User = require('./models/user');
 
 
 
@@ -432,6 +433,41 @@ app.delete('/delete-filled-form/:formId', async (req, res) => {
   }
 });
 
+// Endpoint to fetch caregiver information
+app.get('/allcaregivers', async (req, res) => {
+  try {
+    const caregivers = await User.find({ userType: 'caregiver' });
+
+    res.status(200).json(caregivers);
+  } catch (error) {
+    console.error('Error fetching caregivers:', error);
+    res.status(500).json({ message: 'Failed to fetch caregivers' });
+  }
+});
+
+// Endpoint to fetch client information
+app.get('/allclients', async (req, res) => {
+  try {
+    const clients = await User.find({ userType: 'client' });
+
+    res.status(200).json(clients);
+  } catch (error) {
+    console.error('Error fetching clients:', error);
+    res.status(500).json({ message: 'Failed to fetch clients' });
+  }
+});
+
+// Endpoint to fetch staff information
+app.get('/allstaff', async (req, res) => {
+  try {
+    const staff = await User.find({ userType: 'staff' });
+
+    res.status(200).json(staff);
+  } catch (error) {
+    console.error('Error fetching staff:', error);
+    res.status(500).json({ message: 'Failed to fetch staff' });
+  }
+});
 
 
 

@@ -10,7 +10,7 @@ import withAuth from './WithAuth';
 import { useNavigate } from 'react-router-dom'; 
 import FormsManager from './FormManager';
 import Modal from 'react-bootstrap/Modal';
-
+import AddStaffMember from './AddStaffMember'; 
 
 const FilledFormsModal = ({ show, handleClose, forms, setForms }) => {
   const deleteForm = async (formId) => {
@@ -73,6 +73,10 @@ const AdminPage = () => {
   const [content, setContent] = useState('');
   const [file, setFile] = useState(null);
   const [showFormsManager, setShowFormsManager] = useState(false);
+  const [showUserModal, setShowUserModal] = useState(false);
+  const [userModalTitle, setUserModalTitle] = useState('');
+  const [modalUsers, setModalUsers] = useState([]); 
+
 
 
   const [showFormBuilderModal, setShowFormBuilderModal] = useState(false);
@@ -106,6 +110,51 @@ const AdminPage = () => {
     }
   };
   
+  const fetchClients = async () => {
+    try {
+      const response = await fetch('/allclients');
+      if (!response.ok) {
+        throw new Error('Failed to fetch client information');
+      }
+      const data = await response.json();
+      setModalUsers(data); 
+      setUserModalTitle('Client Information'); 
+      setShowUserModal(true); 
+    } catch (error) {
+      console.error('Error fetching clients:', error);
+    }
+  };
+
+  const fetchCaregivers = async () => {
+    try {
+      const response = await fetch('/allcaregivers');
+      if (!response.ok) {
+        throw new Error('Failed to fetch caregiver information');
+      }
+      const data = await response.json();
+      setModalUsers(data); 
+      setUserModalTitle('Caregiver Information'); 
+      setShowUserModal(true); 
+    } catch (error) {
+      console.error('Error fetching caregivers:', error);
+    }
+  };
+  
+  const fetchStaff = async () => {
+    try {
+      const response = await fetch('/allstaff');
+      if (!response.ok) {
+        throw new Error('Failed to fetch staff information');
+      }
+      const data = await response.json();
+      setModalUsers(data); 
+      setUserModalTitle('Staff Information'); 
+      setShowUserModal(true); 
+    } catch (error) {
+      console.error('Error fetching staff:', error);
+    }
+  };
+
   
   const handleSubmit = async (e) => {
     e.preventDefault(); // Prevent the default form submission behavior, if called within a form
@@ -145,7 +194,7 @@ const AdminPage = () => {
 
 
 return (
-  <Container className="caregiver-dashboard">
+  <Container className="admin-dashboard">
     <h1 className="text-center my-4">Admin Dashboard</h1>
     <Row className="text-center">
       <Col md={4} className="mb-3">
@@ -154,7 +203,7 @@ return (
             <Card.Title>Forms</Card.Title>
             <Button variant="primary" className="m-2" onClick={handleShowFormBuilderModal}>Form Builder</Button>
             <FormBuilderModal show={showFormBuilderModal} handleClose={handleCloseFormBuilderModal} />
-            <Button onClick={() => setShowFormsManager(true)}>View Forms</Button>
+            <Button variant="info" onClick={() => setShowFormsManager(true)}>View Forms</Button>
             <FormsManager show={showFormsManager} handleClose={() => setShowFormsManager(false)} />
             <Button variant="success" className="m-2" onClick={fetchFilledForms}>View Submitted Forms</Button>
           </Card.Body>
@@ -165,39 +214,65 @@ return (
           <Card.Body>
             <Card.Title>Edit Events</Card.Title>
             <Button variant="primary" onClick={handleShowModal}>Edit Newsletter</Button>
-            <NewsletterModal 
-                show={showModal} 
-                handleClose={handleCloseModal} 
-                handleSubmit={handleSubmit}
-                subject={subject}
-                setSubject={setSubject}
-                content={content}
-                setContent={setContent}
-                setFile={setFile}
+            <NewsletterModal
+              show={showModal}
+              handleClose={handleCloseModal}
+              handleSubmit={handleSubmit}
+              subject={subject}
+              setSubject={setSubject}
+              content={content}
+              setContent={setContent}
+              setFile={setFile}
             />
-            <Button variant="warning" onClick={handleCalendar} className="m-2">Edit Calender</Button>
+            <Button variant="warning" onClick={handleCalendar} className="m-2">Edit Calendar</Button>
           </Card.Body>
         </Card>
       </Col>
-      <Col md={4}>
+      <Col md={4} className="mb-3">
         <Card>
           <Card.Body>
-            <Card.Title>Clients and Caregive Info</Card.Title>
-            <Button variant="info" className="m-2">Client Phone Numbers</Button>
-            <Button variant="dark" className="m-2">Client Emails</Button>
+            <Card.Title>Clients and Caregiver Info</Card.Title>
+            <Button variant="primary" className="m-2" onClick={fetchClients}>Fetch Client Info</Button>
+            <Button variant="secondary" className="m-2" onClick={fetchCaregivers}>Fetch Caregiver Info</Button>
+            <Button variant="info" className="m-2" onClick={fetchStaff}>Fetch Staff Info</Button>
           </Card.Body>
         </Card>
       </Col>
     </Row>
+    <Row className="justify-content-md-center mt-4">
+      <Col md={6}>
+        <AddStaffMember />
+      </Col>
+    </Row>
     <FilledFormsModal
-  show={showFilledFormsModal}
-  handleClose={() => setShowFilledFormsModal(false)}
-  forms={filledForms}
-  setForms={setFilledForms} // Passing setFilledForms as setForms to the modal
-/>
-
-
-
+      show={showFilledFormsModal}
+      handleClose={() => setShowFilledFormsModal(false)}
+      forms={filledForms}
+      setForms={setFilledForms}
+    />
+    <Modal show={showUserModal} onHide={() => setShowUserModal(false)} size="lg">
+      <Modal.Header closeButton>
+        <Modal.Title>{userModalTitle}</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        {modalUsers.length > 0 ? (
+          modalUsers.map((user) => (
+            <div key={user._id}>
+              <h5>Name: {user.firstName} {user.lastName}</h5>
+              <p>Email: {user.email}</p>
+              <p>Phone: {user.phoneNumber}</p>
+            </div>
+          ))
+        ) : (
+          <p>No users available.</p>
+        )}
+      </Modal.Body>
+      <Modal.Footer>
+        <Button variant="secondary" onClick={() => setShowUserModal(false)}>
+          Close
+        </Button>
+      </Modal.Footer>
+    </Modal>
   </Container>
 );
 

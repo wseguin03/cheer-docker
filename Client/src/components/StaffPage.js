@@ -5,6 +5,7 @@ import ModularHeader from './ModularHeader';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import withAuth from './WithAuth';
+import './StaffPage.css'
 
 const getMonday = (d) => {
     d = new Date(d);
@@ -73,7 +74,8 @@ const StaffPage = () => {
         });
     };
     return (
-        <div>
+        <div className='background-container'>
+            <div className='fun-div-time'>
             <Row><br></br></Row>
             <Container style={{ maxWidth: '600px' }}>
                 <ModularHeader title="Time Sheet"/>
@@ -101,6 +103,7 @@ const StaffPage = () => {
                     <Button type="submit">Submit for Approval</Button>
                 </Form>
             </Container>
+            </div>
         </div>
     );
 };

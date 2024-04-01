@@ -4,7 +4,7 @@ const SimpleClickerGame = () => {
     const canvasRef = useRef(null);
     const [score, setScore] = useState(0);
     const [target, setTarget] = useState({ x: 100, y: 100, radius: 30 });
-    const [colour, setColour] = useState('red');
+    const [colour, setColour] = useState('e5ae98');
 
     useEffect(() => {
         const canvas = canvasRef.current;
@@ -31,7 +31,7 @@ const SimpleClickerGame = () => {
     };
 
     const changeColour = () => {
-        const colours = ['red', 'blue', 'green', 'yellow', 'purple', 'orange'];
+        const colours = ['#607043', '#e5ae98', '#5e4f59', '#ea7859', '#ece9d2'];
         const randomColour = colours[Math.floor(Math.random() * colours.length)];
         setColour(randomColour);
     };
