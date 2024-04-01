@@ -111,7 +111,7 @@ const ContactPage = () => {
               <br/>
               <Row>
                 <Col md={6}>
-                  <Card.Subtitle className='text-center text-secondary' >CHEER Group 1</Card.Subtitle>
+                  <Card.Subtitle className='text-center text-secondary' >CHEER Group</Card.Subtitle>
                   <p className="text-center">
                     Monday: 8:00-4:00
                     <br />
@@ -138,10 +138,10 @@ const ContactPage = () => {
                     Friday: 5:00-9:00<br />
                     <br />
                     <strong>CHEER Works</strong><br />
+                    *Store opens May 18th 2024*<br/>
                     Wednesday to Friday: 10:00-8:00<br />
                     Saturday & Sunday: 8:00-8:00<br />
                     *Hours may differ for long weekends*<br />
-                    *Store opens May 18th 2024*
                   </p>
                 </Col>
               </Row>
