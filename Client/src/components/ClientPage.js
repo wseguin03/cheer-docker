@@ -9,7 +9,7 @@ import SimpleClickerGame from './SimpleClickerGame';
 import KeyboardClickerGame from './KeyboardClickerGame';
 import { useNavigate } from 'react-router-dom'; 
 import './ClientPage.css'
-
+import withAuth from './WithAuth';
 const ClientPage = () => {
   const [showGameModal, setShowGameModal] = useState(false);
   const handleShowGameModal = (gameType) => {
@@ -115,4 +115,4 @@ const ClientPage = () => {
   );
 };
 
-export default ClientPage;
+export default withAuth(ClientPage, 'client');
