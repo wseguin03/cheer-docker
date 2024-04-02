@@ -36,23 +36,32 @@ const registerUser = asyncHandler(async (req, res) => {
         password,
         userType,
         verificationToken,
-        isVerified: false
+        isVerified: userType === 'staff', 
+        isAdminApproved: userType === 'staff' 
 
     });
 
-    if (user) {
-        // generate the token after creating the user
-        let token = generateToken(user._id);
-
+    if (user.userType === 'staff') {
+        sendConfirmation(user);
+        res.status(201).json({
+            _id: user._id,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            phoneNumber: user.phoneNumber,
+            userType: user.userType,
+            isVerified: user.isVerified,
+            isAdminApproved: user.isAdminApproved,
+        });
+    } else if (user.userType === 'client' || user.userType === 'caregiver') { 
         await sendVerificationEmail(user.email, user.firstName, verificationToken);
-
+        const token = generateToken(user._id);
 
         if (!token) {
-            token = "token";
             res.status(500);
             throw new Error('Token generation failed');
+        }
 
-         }
         res.status(201).json({
             _id: user._id,
             firstName: user.firstName,
@@ -66,9 +75,11 @@ const registerUser = asyncHandler(async (req, res) => {
         });
     } else {
         res.status(400);
-        throw new Error('Invalid user data');
+        console.log("Didnt work")
+        throw new Error('Invalid user type');
     }
 });
+
 const authUser = asyncHandler(async (req, res) => {
     const {email, password} = req.body;
 
@@ -106,6 +117,8 @@ const authUser = asyncHandler(async (req, res) => {
         throw new Error('Invalid email or password');
     }
 });
+
+
 const changePassword = asyncHandler(async (req, res) => {
     // check if req.user exists and has id
     console.log(req.user);
@@ -194,4 +207,57 @@ const adminVerifyUser = async (req, res) => {
 };
 
 
-module.exports = { registerUser, authUser, changePassword, getUsers, updateUser, verifyUser, adminVerifyUser};
+//registering client functionality
+const registerClient = asyncHandler(async (req, res) => {
+    const { firstName, lastName, email, phoneNumber, password, caregiverEmail } = req.body;
+
+    // check if email is in proper format
+    const emailRegex = /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/;
+    if (!emailRegex.test(email)) {
+        return res.status(400).json({ message: 'Invalid email format' });
+    }
+
+    //check if user exists
+    const userExists = await User.findOne({ email });
+    if (userExists) {
+        return res.status(400).json({ message: 'User already exists' });
+    }
+
+    // generate a verification token
+    const verificationToken = crypto.randomBytes(20).toString('hex');
+
+    const user = await User.create({
+        firstName,
+        lastName,
+        email,
+        phoneNumber,
+        password,
+        userType: 'client', 
+        caregiverEmail: caregiverEmail, 
+        verificationToken,
+        isVerified: false
+    });
+
+    if (user) {
+        const token = generateToken(user._id);
+        await sendVerificationEmail(user.email, user.firstName, verificationToken);
+
+        res.status(201).json({
+            _id: user._id,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            email: user.email,
+            phoneNumber: user.phoneNumber,
+            userType: user.userType,
+            caregiverEmail: user.caregiverEmail,
+            isVerified: user.isVerified,
+            token,
+        });
+    } else {
+        res.status(400).json({ message: 'Invalid user data' });
+    }
+});
+
+
+
+module.exports = { registerUser, authUser, changePassword, getUsers, updateUser, verifyUser, adminVerifyUser, registerClient};

@@ -2,13 +2,13 @@
 
 
 
-.d-flex.justify-content-center.align-items-center {
-    background-image: url('../assets/cheerGroupPic-loginpage.jpg'); /* Adjust the path as necessary */
-    background-size: cover;
+/* .d-flex.justify-content-center.align-items-center { */
+/*    background-image: url('../assets/cheerGroupPic-loginpage.jpg');  */
+/*    background-size: cover;
     background-position: center;
     position: relative;
-  }
-  
+  } */
+
   .d-flex.justify-content-center.align-items-center::before {
     content: '';
     position: absolute;
@@ -16,8 +16,8 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.5); /* Adds a dark overlay */
-    z-index: 0;
+    /* background: rgba(0, 0, 0, 0.5); Adds a dark overlay */
+    z-index: -1;
   }
   
   .Card {
@@ -26,3 +26,22 @@
     background-color: rgba(15, 15, 15, 0.8); /* Optional: Makes the Card slightly transparent */
   }
   
+  .background-container {
+    position: relative;
+    background-image: url('../assets/logo1.png');
+    background-repeat: repeat;
+    z-index: 0;
+  }
+  
+  .background-container::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 200px; 
+    height: 200px; 
+    background-image: url('../assets/logo1.png');
+    background-repeat: repeat;
+    opacity: 0.1; 
+  }

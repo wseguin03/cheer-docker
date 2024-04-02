@@ -39,9 +39,8 @@ const userSchema = mongoose.Schema({
         enum: ['staff', 'caregiver', 'admin', 'client'],
         default: 'caregiver'
     },
-    caregiver: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+    caregiverEmail: {
+        type: String,
         required: function() { return this.userType === 'client'; }
     }
 }, {

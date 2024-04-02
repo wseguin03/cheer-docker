@@ -30,7 +30,7 @@ const LoginPage = () => {
       });
       const data = await response.json();
       if (response.ok) {
-        navigate('/caregiver'); // Use navigate for redirection
+        navigate('/'); // Use navigate for redirection
         localStorage.setItem('userInfo', JSON.stringify(data));
         setLoginState(true);
         setLoading(false);
@@ -86,6 +86,7 @@ const LoginPage = () => {
   };
 
   return (
+    <div className="background-container">
     <Container className="d-flex justify-content-center align-items-center" style={{ minHeight: "100vh" }}>
       <Card style={{ width: '400px' }} className="p-4">
         <Card.Body>
@@ -159,6 +160,7 @@ const LoginPage = () => {
         </Card.Body>
       </Card>
     </Container>
+    </div>
   );
 };
 

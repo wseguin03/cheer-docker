@@ -8,11 +8,21 @@ app.use(cors());
 const port = 3001; // Use a different port from your React app
 const userRoutes = require('./routes/userRoutes');
 const multer = require('multer');
+const timesheet = require('./models/timesheet');
+const timesheetRoutes = require('./routes/timeSheetRoutes');
+const formRoutes = require('./routes/formRoutes');
 const storage = multer.memoryStorage();
 const upload = multer({storage: storage});
+const Form = require('./models/forms'); // Adjust the path according to your file structure
+const FormSubmission = require('./models/FormSubmission'); // Adjust the path as necessary
+const User = require('./models/user');
+
+
+
 // require('dotenv').config()
 // console.log("TOKEN"+ process.env.JWT_SECRET)
 // Connect to MongoDB
+
 mongoose.connect('mongodb+srv://temp_user:admin@cheer.gzid9bc.mongodb.net/?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true });
 
 mongoose.connection.once('open', function () {
@@ -43,6 +53,16 @@ const newsletterSchema = new mongoose.Schema({
   },
 });
 const NewsletterSignup = mongoose.model('Newsletter', newsletterSchema);
+
+const EventSchema = new mongoose.Schema({
+  title: String,
+  start: Date,
+  end: Date,
+  allDay: Boolean,
+});
+
+
+const Event = mongoose.model('Event', EventSchema);
 
 
 //USE THIS FUNCTION WITH HEAVY CAUTION -- WILL DELETE ALL USERS FROM DATABASE
@@ -314,6 +334,141 @@ app.post('/send-newsletter', upload.single('file'), async (req, res) => {
   }
 });
 
+//adding new events end point
+app.post('/events', async (req, res) => {
+  try {
+    const event = new Event(req.body);
+    await event.save();
+    res.status(201).send(event);
+  } catch (error) {
+    res.status(400).send(error);
+  }
+});
+
+// GET route to retrieve events
+app.get('/get-saved-events', async (req, res) => {
+  try {
+    const events = await Event.find({});
+    res.send(events);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
+// DELETE route to delete an event
+app.delete('/delete-events/:id', async (req, res) => {
+  try {
+    const event = await Event.findByIdAndDelete(req.params.id);
+    if (!event) {
+      res.status(404).send('No event found');
+    }
+    res.status(200).send(`Successfully deleted event with id: ${req.params.id}`);
+  } catch (error) {
+    res.status(500).send(error);
+  }
+});
+
+
+
+//endpoint to get forms from the database
+
+// Endpoint to get all visible forms from the database
+app.get('/forms/get-all', async (req, res) => {
+  try {
+    const visibleForms = await Form.find({ isVisible: true });
+    res.status(200).json(visibleForms);
+  } catch (error) {
+    console.error('Error fetching forms:', error);
+    res.status(500).json({ message: 'Failed to get forms' });
+  }
+});
+
+app.post('/api/forms/submit', async (req, res) => {
+  try {
+    const { formId, answers, submittedBy } = req.body;  // Make sure 'submittedBy' is provided or derive it from the user session/authentication context
+
+    // Optional: Validate formId, answers, and submittedBy as needed
+
+    const newSubmission = new FormSubmission({
+      formId,
+      answers,
+      submittedBy // You might want to get this from the session or token if using authentication
+    });
+
+    await newSubmission.save();
+
+    res.status(201).json({ message: 'Form submitted successfully', submissionId: newSubmission._id });
+  } catch (error) {
+    console.error('Failed to save form submission:', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+});
+
+app.get('/filledForms/get-all', async (req, res) => {
+  try {
+    const formSubmissions = await FormSubmission.find()
+      .populate('formId') // If you want to include details of the form itself
+      .exec();
+
+    res.status(200).json(formSubmissions);
+  } catch (error) {
+    console.error('Error fetching forms:', error);
+    res.status(500).json({ message: 'Failed to get forms' });
+  }
+});
+
+app.delete('/delete-filled-form/:formId', async (req, res) => {
+  try {
+    const { formId } = req.params;
+    const result = await FormSubmission.findByIdAndDelete(formId);
+
+    if (!result) {
+      return res.status(404).send('The form with the given ID was not found.');
+    }
+
+    res.send(result);
+  } catch (error) {
+    console.error('Error deleting the form:', error);
+    res.status(500).send('Error deleting the form');
+  }
+});
+
+// Endpoint to fetch caregiver information
+app.get('/allcaregivers', async (req, res) => {
+  try {
+    const caregivers = await User.find({ userType: 'caregiver' });
+
+    res.status(200).json(caregivers);
+  } catch (error) {
+    console.error('Error fetching caregivers:', error);
+    res.status(500).json({ message: 'Failed to fetch caregivers' });
+  }
+});
+
+// Endpoint to fetch client information
+app.get('/allclients', async (req, res) => {
+  try {
+    const clients = await User.find({ userType: 'client' });
+
+    res.status(200).json(clients);
+  } catch (error) {
+    console.error('Error fetching clients:', error);
+    res.status(500).json({ message: 'Failed to fetch clients' });
+  }
+});
+
+// Endpoint to fetch staff information
+app.get('/allstaff', async (req, res) => {
+  try {
+    const staff = await User.find({ userType: 'staff' });
+
+    res.status(200).json(staff);
+  } catch (error) {
+    console.error('Error fetching staff:', error);
+    res.status(500).json({ message: 'Failed to fetch staff' });
+  }
+});
+
 
 
 
@@ -328,3 +483,5 @@ app.listen(port, () => {
 //Routes
 
 app.use('/api/users', userRoutes);
+app.use('/api/timesheets', timesheetRoutes);
+app.use('/api/forms', formRoutes)

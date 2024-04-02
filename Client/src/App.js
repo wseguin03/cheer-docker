@@ -9,6 +9,12 @@ import ClientPage from './components/ClientPage';
 import CaregiverPage from './components/CaregiverPage';
 import AdminPage from './components/AdminPage';
 import LoginPage from './components/LoginPage';
+import StaffPage from './components/StaffPage';
+import Calendar from './components/Calendar';
+import ViewTimeSheets from './components/ViewTimeSheets';
+import CareGiverForms from './components/CareGiverForms';
+import Gallery from './components/Gallery';
+
 
 function App() {
   return (
@@ -21,8 +27,13 @@ function App() {
         <Route path="/client" element={<ClientPage />} />
         <Route path="/caregiver" element={<CaregiverPage />} />
         <Route path="/admin" element={<AdminPage />} />
+        <Route path="/staff" element={<StaffPage />} />
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/calendar" element={<Calendar />} />
+        <Route path="/viewtimesheets" element={<ViewTimeSheets />} />
 
+        <Route path="/forms-caregiver" element={<CareGiverForms />} />
+        <Route path='/gallery' element={<Gallery/>} />
         
       </Routes>
     </BrowserRouter>
