@@ -17,7 +17,7 @@ services:
 
   server:
     build: ./Server
-    container_name: node-server
+    container_name: node-server2
 
     ports:
       - '3001:3001'
