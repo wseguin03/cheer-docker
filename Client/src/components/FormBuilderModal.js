@@ -53,8 +53,8 @@ const FormBuilderModal = ({ show, handleClose, formToEdit, handleFormDeleted }) 
 
   const submitForm = async () => {
     const endpoint = formToEdit
-      ? `http://localhost:3001/api/forms/${formToEdit._id}` 
-      : 'http://localhost:3001/api/forms/forms';
+      ? `/api/forms/${formToEdit._id}` 
+      : '/api/forms/forms';
     const method = formToEdit ? 'put' : 'post';
   
     try {

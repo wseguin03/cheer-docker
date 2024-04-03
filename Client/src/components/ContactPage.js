@@ -17,7 +17,7 @@ const ContactPage = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await fetch('http://localhost:3001/send-contact-email', {
+      await fetch('/send-contact-email', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
