@@ -11,7 +11,7 @@ const FormsManager = ({ show, handleClose }) => {
   useEffect(() => {
     const fetchForms = async () => {
       try {
-        const response = await axios.get('http://localhost:3001/api/forms/forms');
+        const response = await axios.get('/api/forms/forms');
         setForms(response.data);
       } catch (error) {
         console.error('Error fetching forms:', error);
@@ -25,7 +25,7 @@ const FormsManager = ({ show, handleClose }) => {
 
   const toggleVisibility = async (formId, isVisible) => {
     try {
-      await axios.patch(`http://localhost:3001/api/forms/forms/${formId}/visibility`, { isVisible: !isVisible });
+      await axios.patch(`/api/forms/forms/${formId}/visibility`, { isVisible: !isVisible });
       const updatedForms = forms.map(form => form._id === formId ? { ...form, isVisible: !isVisible } : form);
       setForms(updatedForms);
     } catch (error) {
@@ -35,7 +35,7 @@ const FormsManager = ({ show, handleClose }) => {
 
   const deleteForm = async (formId) => {
     try {
-      await axios.delete(`http://localhost:3001/api/forms/forms/${formId}`);
+      await axios.delete(`/api/forms/forms/${formId}`);
       const updatedForms = forms.filter(form => form._id !== formId);
       setForms(updatedForms);
     } catch (error) {
