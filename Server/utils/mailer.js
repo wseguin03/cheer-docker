@@ -16,7 +16,7 @@ const transporter = nodemailer.createTransport({
 // function to send verification email
 const sendVerificationEmail = async (userEmail) => {
     const user = await User.findOne({ email: userEmail });
-    const verificationLink = `http://localhost:3001/api/users/verify/${user._id}`; 
+    const verificationLink = `https://cheer-docker-server-mebdleloza-uc.a.run.app/api/users/verify/${user._id}`; 
     const mailOptions = {
     from: 'cheer.noreply@gmail.com',
     to: userEmail,
@@ -35,7 +35,7 @@ const sendVerificationEmail = async (userEmail) => {
 
 const sendAdminApprovalEmail = async (user) => {
 
-  const approvalLink = `http://localhost:3001/api/users/admin-approve/${user._id}`; 
+  const approvalLink = `https://cheer-docker-server-mebdleloza-uc.a.run.app/api/users/admin-approve/${user._id}`; 
   const mailOptions = {
     from: 'cheer.noreply@gmail.com',
     to: 'cheer.noreply@gmail.com', 
